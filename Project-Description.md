@@ -6,7 +6,7 @@ Charles Greenman: greenmcg@mail.uc.edu or chuckgreenman@protonmail.com\
 Isaac Mathers: matherit@mail.uc.edu or isaactm98@gmail.com (preferred)
 
 ## Faculty Advisor
-Dr. Raj Bhatnagar (tentative)
+Dr. Raj Bhatnagar bhatnark@ucmail.uc.edu (tentative)
 
 ## Project Background Description
 Social media has come under scrutiny in recent years for being a place where biased information can flourish. Often, these ideas perpetrated by people with an agenda. For the average internet user, it is difficult to quickly assess whether content comes from a biased individual. We want to provide a way for people to analyze certain users they may be interacting with and determine if they are likely to publish biased information. We would achieve this by analyzing the social network surrounding a user and determining if those they interact with spread biased information or characterize a sock puppet organization.
