@@ -6,10 +6,10 @@ Charles Greenman: greenmcg@mail.uc.edu or chuckgreenman@protonmail.com\
 Isaac Mathers: matherit@mail.uc.edu or isaactm98@gmail.com (preferred)
 
 ## Faculty Advisor
-Raj Bhatnagar (tentative)
+Dr. Raj Bhatnagar (tentative)
 
 ## Project Background Description
-Social media has come under scrutiny in recent years for being a place where biased information can flourish. Often, these ideas are perpetrated by people with an agenda. For the average internet user, it is difficult to quickly assess whether content comes from a biased individual. We want to provide a way for people to analyze certain users they may be interacting with and determine if they are likely to publish biased information. 
+Social media has come under scrutiny in recent years for being a place where biased information can flourish. Often, these ideas perpetrated by people with an agenda. For the average internet user, it is difficult to quickly assess whether content comes from a biased individual. We want to provide a way for people to analyze certain users they may be interacting with and determine if they are likely to publish biased information. We would achieve this by analyzing the social network surrounding a user and determining if those they interact with spread biased information or characterize a sock puppet organization.
 
 ## Project Problem Statement
 Identifying biased information is resource intensive because the only way to do it well is to fact check everything. It would be useful to a user to know whether there is a reasonable risk that they are interacting with a user that curates biased information.
