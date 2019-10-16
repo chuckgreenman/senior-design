@@ -1,0 +1,6 @@
+**Milestone #**|**Deliverable**|**Explanation**
+:-----:|:-----:|:-----:
+0|Toolset/package to access user activity|This phase/milestone is concerned with creating a base toolset that will allow us to access the data we need in an easy, consistent manner. This will allow us to easily use this data for other purposes, like running algorithms and creating a database.
+1|Enhanced toolset/package|This phase/milestone will build upon the output of the previous phase by adding preliminary clustering and other data analysis algorithms to get our first cut at insights and visualizations.
+2|Neural net/algorithms|This phase/milestone will take data analysis a step farther and will use the dataset formed in previous phases to train a neural network. This network will allow us to gain more sophisticated insights about Reddit users.
+3|User interface|This phase/milestone will make the work from all our previous phases usable by someone with minimal technical understanding. This will make our project a true product that can have a wider impact.
