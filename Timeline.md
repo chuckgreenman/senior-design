@@ -13,5 +13,5 @@
 11|2|Isaac|1/15/20|1/22/20|Set up database for neural net
 12|2|Chuck|1/22/20|1/29/20|Use neural net to generate preliminary predictions
 13|3|Chuck|1/29/20|2/8/20|Add method for convenient access to request predictions to toolset
-14|3|Anna|12/15/19|1/15/19|Research user interface implementation options
-15|3|Anna|1/15/19|2/15/19|Create robust user interface
+14|3|Anna|12/15/19|1/15/20|Research user interface implementation options
+15|3|Anna|1/15/20|2/15/20|Create robust user interface
