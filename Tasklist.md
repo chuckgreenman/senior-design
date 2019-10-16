@@ -1,4 +1,4 @@
-**Task Number**|**Phase**|**Assignee**|**Task**
+**Task Number**|**Milestone**|**Assignee**|**Task**
 :-----:|:-----:|:-----:|:-----:
 1|0|Chuck|Price using Big Query and CloudML vs Exporting Data and building a CPU based processing method
 2|0|Chuck|Write tooling that allows us to interact with Big Query data
