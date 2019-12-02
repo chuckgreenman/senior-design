@@ -10,10 +10,9 @@ The effort numbers below represent the percentage of the task to be completed by
 6|25|25|50|Isaac|Rudementary data Analysis: Clustering
 7|60|20|20|Anna|Select proper visualizations
 8|60|20|20|Anna|Rudementary data Analysis: Visualization using D3js
-9|15|70|15|Chuck|"Produce ""clean"" training/testing dataset for neural net"
-10|20|10|70|Isaac|Train neural net
-11|10|20|70|Isaac|Set up database for neural net
-12|10|65|25|Chuck|Use neural net to generate preliminary predictions
-13|10|80|10|Chuck|Add method for convenient access to request predictions to toolset
-14|80|10|10|Anna|Research user interface implementation options
-15|60|20|20|Anna|Create robust user interface
+9|15|70|15|Chuck|Select social graph analysis methods
+10|20|10|70|Chuck|Implement social graph analysis methods
+11|10|20|70|Isaac|Implement scoring/recommendation methodology
+12|10|65|25|Chuck|Integrate into visualization
+13|80|10|10|Anna|Research user interface implementation options
+14|60|20|20|Anna|Create robust user interface
