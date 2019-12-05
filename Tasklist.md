@@ -8,10 +8,9 @@
 6|1|Isaac|Rudementary data Analysis: Clustering
 7|1|Anna|Select proper visualizations
 8|1|Anna|Rudementary data Analysis: Visualization using D3js
-9|1|Chuck|Produce "clean" training/testing dataset for neural net
-10|2|Isaac|Train neural net
-11|2|Isaac|Set up database for neural net
-12|2|Chuck|Use neural net to generate preliminary predictions
-13|3|Chuck|Add method for convenient access to request predictions to toolset
-14|3|Anna|Research user interface implementation options
-15|3|Anna|Create robust user interface
+9|1|Chuck|Select social graph analysis methods
+10|2|Chuck|Implement social graph analysis methods
+11|2|Isaac|Implement scoring/recommendation methodology
+12|2|Chuck|Integrate into visualization
+13|3|Anna|Research user interface implementation options
+14|3|Anna|Create robust user interface
