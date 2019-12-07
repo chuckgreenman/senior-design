@@ -1,6 +1,6 @@
 # Table of Contents
-### 1. Project Abstract
-### [2. Project Description](Project-Description.md)
+### 1. [Project Abstract](Project_Abstract.md)
+### 2. [Project Description](Project-Description.md)
 ### 3. User Stories and Design Diagrams
 #### 3.1 [User Stories](User_Stories.md)
 #### 3.2 [High Level Design Diagram](design_diagrams/High_Level_updated.pdf)
