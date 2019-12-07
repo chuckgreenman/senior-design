@@ -22,6 +22,6 @@
 #### 7.3 [Isaac's Biography](homework_essays/personal_bios_assignment_1/mathers_isaac_professional_bio.md)
 ### 8. Budget [TODO]
 ### 9. Appendix
-#### 9.1 Time Spent per Member
-#### 9.2 Citations
+#### 9.1 Time Spent per Member [TODO]
+#### 9.2 Citations [TODO]
 #### 9.3 [Source Code](src/reddit-live-api)
