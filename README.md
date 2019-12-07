@@ -6,7 +6,7 @@
 #### 3.2 [High Level Design Diagram](design_diagrams/High_Level_updated.pdf)
 #### 3.3 [Mid Level Design Diagram](design_diagrams/Mid_Level_updated.pdf)
 #### 3.4 [Low Level Design Diagram](design_diagrams/Low_Level_updated.pdf)
-#### 3.5 Design Diagram Conventions/Descriptions [TODO]
+#### 3.5 [Design Diagram Conventions/Descriptions](design_diagrams/Diagram_Description.md)
 ### 4. Project Tasks and Timeline
 #### 4.1 [Task List](Tasklist.md)
 #### 4.2 [Timeline](Timeline.md)
@@ -20,8 +20,8 @@
 #### 7.1 [Anna's Biography](homework_essays/personal_bios_assignment_1/debrunner_anna_professional_bio.md)
 #### 7.2 [Chuck's Biography](homework_essays/personal_bios_assignment_1/greenman_charles_professional_bio.md)
 #### 7.3 [Isaac's Biography](homework_essays/personal_bios_assignment_1/mathers_isaac_professional_bio.md)
-### 8. Budget [TODO]
+### 8. [Budget](Budget.md)
 ### 9. Appendix
 #### 9.1 Time Spent per Member [TODO]
-#### 9.2 Citations [TODO]
+#### 9.2 [Citations [TODO]](Citations.md)
 #### 9.3 [Source Code](src/reddit-live-api)
