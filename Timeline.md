@@ -12,5 +12,5 @@
 10|2|Chuck|12/15/19|1/15/20|Implement social graph analysis methods
 11|2|Isaac|1/15/20|1/22/20|Implement scoring/recommendation methodology
 12|2|Chuck|1/22/20|1/29/20|Integrate into visualization
-14|3|Anna|12/15/19|1/15/20|Research user interface implementation options
-15|3|Anna|1/15/20|2/15/20|Create robust user interface
+13|3|Anna|12/15/19|1/15/20|Research user interface implementation options
+14|3|Anna|1/15/20|2/15/20|Create robust user interface
