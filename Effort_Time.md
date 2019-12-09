@@ -33,24 +33,24 @@
 10/30/19|8:00|10:00|2|Create Google Cloud Platform Account, transfer data to S3 Buckets, Install GCP CLI |Chuck
 10/31/19|1:20|3:20|2|Write and Run Export Data for Reddit Data From Big Query|Chuck
 10/31/19|6:15|7:30|1.25|Work on slides|Anna
-11/2/2019|1:00|2:30|1.50|Research PRAW python package|Anna
-11/3/2019|3:00|5:30|2.50|Work on Reddit Live API|Anna, Isaac
-11/5/2019|11:10|11:30|0.33|Meet w advisor|Anna
-11/7/2019|10:00|10:45|0.75|Update user stories|Anna
-11/8/2019|10:45|11:45|1.00|Finish presentation|Isaac, Anna
-11/8/2019|1:30|2:45|1.25|Reddit Live API|Anna
-11/9/2019|1:00|3:00|2.00|Record presentation|Chuck, Isaac, Anna
-11/11/2019|2:30|4:15|1.75|Read up on additional clustering techniques and examine examples|Isaac
-11/12/2019|3:00|4:45|1.75|Reddit Live API|Anna
-11/13/2019|4:00|6:00|2.00|Investigate Python's abillity to manage feeding data through ram that is too large to be opened in memory|Chuck
-11/13/2019|2:30|4:30|2.00|Reddit Live API|Anna
-11/17/2019|2:30|5:00|2.50|Drafted potential tests and metrics|Isaac
-11/25/2019|4:00|5:30|1.50|Investigate Clustering Options|Isaac
-11/27/2019|2:00|4:00|2.00|Reddit Live API|Anna
-11/30/2019|2:00|4:00|2.00|Researched other platforms that use Reddit data to determine viability in hooking our system into theirs|Isaac
-12/1/2019|1:00|2:30|1.50|Update repo with design/timeline updates|Anna
-12/5/2019|1:45|3:45|2.00|Updated diagrams|Anna, Isaac
-12/5/2019|11:00|11:30|0.50|Track down low-level design diagram changes|Chuck
-12/6/2019|8:15|10:45|2.50|Researched Russian interference on Reddit|Isaac
-12/6/2019|1:00|3:00|2.00|Identify efficient ways to vectorize user content|Chuck
-12/7/2019|2:00|4:00|2.00|Work on final report|Anna, Isaac
+11/2/19|1:00|2:30|1.50|Research PRAW python package|Anna
+11/3/19|3:00|5:30|2.50|Work on Reddit Live API|Anna, Isaac
+11/5/19|11:10|11:30|0.33|Meet w advisor|Anna
+11/7/19|10:00|10:45|0.75|Update user stories|Anna
+11/8/19|10:45|11:45|1.00|Finish presentation|Isaac, Anna
+11/8/19|1:30|2:45|1.25|Reddit Live API|Anna
+11/9/19|1:00|3:00|2.00|Record presentation|Chuck, Isaac, Anna
+11/11/19|2:30|4:15|1.75|Read up on additional clustering techniques and examine examples|Isaac
+11/12/19|3:00|4:45|1.75|Reddit Live API|Anna
+11/13/19|4:00|6:00|2.00|Investigate Python's abillity to manage feeding data through ram that is too large to be opened in memory|Chuck
+11/13/19|2:30|4:30|2.00|Reddit Live API|Anna
+11/17/19|2:30|5:00|2.50|Drafted potential tests and metrics|Isaac
+11/25/19|4:00|5:30|1.50|Investigate Clustering Options|Isaac
+11/27/19|2:00|4:00|2.00|Reddit Live API|Anna
+11/30/19|2:00|4:00|2.00|Researched other platforms that use Reddit data to determine viability in hooking our system into theirs|Isaac
+12/1/19|1:00|2:30|1.50|Update repo with design/timeline updates|Anna
+12/5/19|1:45|3:45|2.00|Updated diagrams|Anna, Isaac
+12/5/19|11:00|11:30|0.50|Track down low-level design diagram changes|Chuck
+12/6/19|8:15|10:45|2.50|Researched Russian interference on Reddit|Isaac
+12/6/19|1:00|3:00|2.00|Identify efficient ways to vectorize user content|Chuck
+12/7/19|2:00|4:00|2.00|Work on final report|Anna, Isaac
