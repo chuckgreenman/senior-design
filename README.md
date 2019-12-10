@@ -1,4 +1,5 @@
-# Table of Contents
+# OSCAR (Open Social Clustering and Analysis for Reddit)
+## Table of Contents
 ### 1. [Project Abstract](Project_Abstract.md)
 ### 2. [Project Description](Project-Description.md)
 ### 3. User Stories and Design Diagrams
@@ -25,3 +26,5 @@
 #### 9.1 [Time Spent per Member](Effort_Time.md)
 #### 9.2 [Citations](Citations.md)
 #### 9.3 [Source Code](src/reddit-live-api)
+## Installation/Usage
+The code in this project utilizes Python 3.6.4. More installation and usage instructions will be coming soon.
