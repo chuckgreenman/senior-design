@@ -1,6 +1,6 @@
 import praw
-from src.keys import getID, getSecret, getAgent
-from src.Utils import scrub_text, rank_items
+from keys import getID, getSecret, getAgent
+from Utils import scrub_text, rank_items
 
 
 class User:
@@ -138,8 +138,12 @@ class User:
             items = items + [uv.upvote_ratio]
         return items
 
-    ''' Utility Methods
+    ''' Moderator
     '''
+    def get_moderated_subreddits(self):
+        items = []
+        for subreddit in self.user.moderated():
+            items = items + [subreddit.display_name]
 
 user = User('hawksoul12')
 print(user.get_upvoted_titles())

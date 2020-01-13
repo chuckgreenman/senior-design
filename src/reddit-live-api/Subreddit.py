@@ -1,7 +1,8 @@
 import praw
-from src.keys import getID, getSecret, getAgent
+import prawcore.exceptions
+from keys import getID, getSecret, getAgent
 from bs4 import BeautifulSoup
-from src.Utils import scrub_text
+from Utils import scrub_text
 
 
 class Subreddit:
@@ -79,7 +80,33 @@ class Subreddit:
             items = items + [scrub_text(submission.selftext)]
         return items
 
+    ''' Top submissions
+    '''
+    def get_top_submission_titles(self, time='day'):
+        items = []
+        for submission in self.subreddit.top(time):
+            items = items + [submission.title]
+        return items
+
+    def get_top_submission_text(self, time='day'):
+        items = []
+        for submission in self.subreddit.top(time):
+            items = items + [scrub_text(submission.selftext)]
+        return items
+
+    ''' Quarantined
+    '''
+    def get_is_quarantined(self):
+        try:
+            next(self.subreddit.hot())
+            return False
+        except prawcore.exceptions.Forbidden:
+            return True
+
+    ''' Traffic
+    '''
+
+    # TODO: Search method could be useful but have to think about use case to implement properly.
+
 
 sub = Subreddit('askReddit')
-print(sub.get_recent_submission_text())
-
