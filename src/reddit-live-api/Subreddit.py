@@ -103,9 +103,6 @@ class Subreddit:
         except prawcore.exceptions.Forbidden:
             return True
 
-    ''' Traffic
-    '''
-
     # TODO: Search method could be useful but have to think about use case to implement properly.
 
 
