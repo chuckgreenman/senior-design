@@ -1,6 +1,6 @@
 import praw
-from keys import getID, getSecret, getAgent
-from Utils import scrub_text, rank_items
+from src.reddit_live_api.keys import getID, getSecret, getAgent
+from src.reddit_live_api.Utils import scrub_text, rank_items
 
 
 class User:
@@ -144,6 +144,3 @@ class User:
         items = []
         for subreddit in self.user.moderated():
             items = items + [subreddit.display_name]
-
-user = User('hawksoul12')
-print(user.get_upvoted_titles())

@@ -1,8 +1,8 @@
+from src.reddit_live_api.keys import getID, getSecret, getAgent
+from src.reddit_live_api.Utils import scrub_text
 import praw
 import prawcore.exceptions
-from keys import getID, getSecret, getAgent
 from bs4 import BeautifulSoup
-from Utils import scrub_text
 
 
 class Subreddit:
@@ -80,6 +80,12 @@ class Subreddit:
             items = items + [scrub_text(submission.selftext)]
         return items
 
+    def get_hot_submission_authors(self):
+        items = []
+        for submission in self.subreddit.hot():
+            items = items + [scrub_text(submission.author.name)]
+        return items
+
     ''' Top submissions
     '''
     def get_top_submission_titles(self, time='day'):
@@ -92,6 +98,12 @@ class Subreddit:
         items = []
         for submission in self.subreddit.top(time):
             items = items + [scrub_text(submission.selftext)]
+        return items
+
+    def get_top_submission_authors(self, time='day'):
+        items = []
+        for submission in self.subreddit.top(time):
+            items = items + [scrub_text(submission.author.name)]
         return items
 
     ''' Quarantined
