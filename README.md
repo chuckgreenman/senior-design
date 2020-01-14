@@ -25,6 +25,6 @@
 ### 9. Appendix
 #### 9.1 [Time Spent per Member](Effort_Time.md)
 #### 9.2 [Citations](Citations.md)
-#### 9.3 [Source Code](src/reddit-live-api)
+#### 9.3 [Source Code](src/reddit_live_api)
 ## Installation/Usage
 The code in this project utilizes Python 3.6.4. More installation and usage instructions will be coming soon.
