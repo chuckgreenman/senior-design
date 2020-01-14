@@ -1,6 +1,7 @@
 import praw
-from src.reddit_live_api.keys import getID, getSecret, getAgent
-from src.reddit_live_api.Utils import scrub_text, rank_items
+import prawcore.exceptions
+from reddit_live_api.keys import getID, getSecret, getAgent
+from reddit_live_api.Utils import scrub_text, rank_items
 
 
 class User:
@@ -96,8 +97,11 @@ class User:
 
     def get_submission_subreddits(self, ranked=False):
         items = []
-        for submission in self.user.submissions.top('all'):
-            items = items + [submission.subreddit.display_name]
+        try:
+            for submission in self.user.submissions.top('all'):
+                items = items + [submission.subreddit.display_name]
+        except prawcore.exceptions.Forbidden:
+            print("User {0} has a submission in a forbidden subreddit".format(self.username))
         if ranked:
             return rank_items(items)
         return items

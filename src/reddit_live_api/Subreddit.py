@@ -1,5 +1,5 @@
-from src.reddit_live_api.keys import getID, getSecret, getAgent
-from src.reddit_live_api.Utils import scrub_text
+from reddit_live_api.keys import getID, getSecret, getAgent
+from reddit_live_api.Utils import scrub_text
 import praw
 import prawcore.exceptions
 from bs4 import BeautifulSoup
