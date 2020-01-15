@@ -17,51 +17,96 @@ class Subreddit:
                          user_agent=self.agent)
         self.subreddit = reddit.subreddit(self.subreddit_name)
 
+    # This method checks that a subreddit exists and is not quarantined. Note: we are currently not
+    # supporting the analysis of quarantined subreddits due to potential issues this may cause.
+    def check_subreddit_valid(self):
+        try:
+            test = self.subreddit.id
+            return True
+        except prawcore.exceptions.Redirect:
+            return False
+        except prawcore.exceptions.Forbidden:
+            return False
+
     def get_description(self, format='plain'):
-        html = self.subreddit.description_html
+        try:
+            html = self.subreddit.description_html
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain subreddit description. Subreddit not found.')
+            return 'Description not found'
         if format == 'plain':
             soup = BeautifulSoup(html, "html.parser")
             return ''.join(soup.findAll(text=True))
         elif format == 'html':
             return html
-        elif format == "md":
+        elif format == 'md':
             return self.subreddit.description
-        return 'description not found'
+        return 'Description not found'
 
     def get_subscriber_count(self):
-        return self.subreddit.subscribers
+        try:
+            return self.subreddit.subscribers
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain subreddit subscriber count. Subreddit not found.')
+            return -1
 
     ''' Recent activity
     '''
     def get_recent_comments(self, number=100):
         items = []
-        for comment in self.subreddit.comments(limit=number):
-            items = items + [comment.body]
+        try:
+            for comment in self.subreddit.comments(limit=number):
+                items = items + [scrub_text(comment.body)]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain recent comments. Subreddit not found.')
+        except prawcore.exceptions.Forbidden:
+            print('Encountered an error trying to obtain recent comments. Access is forbidden.')
+        return items
 
     def get_recent_submission_titles(self):
         items = []
-        for submission in self.subreddit.new():
-            items = items + [submission.title]
+        try:
+            for submission in self.subreddit.new():
+                items = items + [scrub_text(submission.title)]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain recent submission titles. Subreddit not found.')
+        except prawcore.exceptions.Forbidden:
+            print('Encountered an error trying to obtain recent submission titles. Access is forbidden.')
         return items
 
     def get_recent_submission_text(self):
         items = []
-        for submission in self.subreddit.new():
-            items = items + [scrub_text(submission.selftext)]
+        try:
+            for submission in self.subreddit.new():
+                items = items + [scrub_text(submission.selftext)]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain recent submission text. Subreddit not found.')
+        except prawcore.exceptions.Forbidden:
+            print('Encountered an error trying to obtain recent submission text. Access is forbidden.')
         return items
 
     ''' Controversial submissions
     '''
     def get_controversial_submission_titles(self, time_period='week'):
         items = []
-        for submission in self.subreddit.controversial(time_period):
-            items = items + [submission.title]
+        try:
+            for submission in self.subreddit.controversial(time_period):
+                items = items + [scrub_text(submission.title)]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain controversial submission titles. Subreddit not found.')
+        except prawcore.exceptions.Forbidden:
+            print('Encountered an error trying to obtain controversial submission titles. Access is forbidden.')
         return items
 
     def get_controversial_submission_text(self, time_period='week'):
         items = []
-        for submission in self.subreddit.controversial(time_period):
-            items = items + [scrub_text(submission.selftext)]
+        try:
+            for submission in self.subreddit.controversial(time_period):
+                items = items + [scrub_text(submission.selftext)]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain controversial submission text. Subreddit not found.')
+        except prawcore.exceptions.Forbidden:
+            print('Encountered an error trying to obtain controversial submission text. Access is forbidden.')
         return items
 
     # TODO: banned users... could be interesting
@@ -70,28 +115,48 @@ class Subreddit:
     '''
     def get_hot_submission_titles(self):
         items = []
-        for submission in self.subreddit.hot():
-            items = items + [submission.title]
+        try:
+            for submission in self.subreddit.hot():
+                items = items + [scrub_text(submission.title)]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain hot submission titles. Subreddit not found.')
+        except prawcore.exceptions.Forbidden:
+            print('Encountered an error trying to obtain hot submission titles. Access is forbidden.')
         return items
 
     def get_hot_submission_text(self):
         items = []
-        for submission in self.subreddit.hot():
-            items = items + [scrub_text(submission.selftext)]
+        try:
+            for submission in self.subreddit.hot():
+                items = items + [scrub_text(submission.selftext)]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain hot submission text. Subreddit not found.')
+        except prawcore.exceptions.Forbidden:
+            print('Encountered an error trying to obtain hot submission text. Access is forbidden.')
         return items
 
     ''' Top submissions
     '''
     def get_top_submission_titles(self, time='day'):
         items = []
-        for submission in self.subreddit.top(time):
-            items = items + [submission.title]
+        try:
+            for submission in self.subreddit.top(time):
+                items = items + [scrub_text(submission.title)]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain top submission titles. Subreddit not found.')
+        except prawcore.exceptions.Forbidden:
+            print('Encountered an error trying to obtain top submission titles. Access is forbidden.')
         return items
 
     def get_top_submission_text(self, time='day'):
         items = []
-        for submission in self.subreddit.top(time):
-            items = items + [scrub_text(submission.selftext)]
+        try:
+            for submission in self.subreddit.top(time):
+                items = items + [scrub_text(submission.selftext)]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain top submission text. Subreddit not found.')
+        except prawcore.exceptions.Forbidden:
+            print('Encountered an error trying to obtain top submission text. Access is forbidden.')
         return items
 
     ''' Quarantined
@@ -104,6 +169,3 @@ class Subreddit:
             return True
 
     # TODO: Search method could be useful but have to think about use case to implement properly.
-
-
-sub = Subreddit('askReddit')
