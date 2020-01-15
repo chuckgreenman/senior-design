@@ -64,6 +64,12 @@ class Subreddit:
             items = items + [scrub_text(submission.selftext)]
         return items
 
+    def get_controversial_submission_authors(self, time_period='week'):
+        items = []
+        for submission in self.subreddit.controversial(time_period):
+            items = items + [submission.author.name]
+        return items
+
     # TODO: banned users... could be interesting
 
     ''' Hot submissions
