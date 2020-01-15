@@ -50,6 +50,11 @@ class Subreddit:
             items = items + [scrub_text(submission.selftext)]
         return items
 
+    # I'm not sure if this is advisable. Kinda circumvents abstraction,
+    # but it provides a convenient way for us to receive posts
+    def get_recent_submissions(self):
+        return self.subreddit.new()
+
     ''' Controversial submissions
     '''
     def get_controversial_submission_titles(self, time_period='week'):
@@ -69,6 +74,11 @@ class Subreddit:
         for submission in self.subreddit.controversial(time_period):
             items = items + [submission.author.name]
         return items
+
+    # I'm not sure if this is advisable. Kinda circumvents abstraction,
+    # but it provides a convenient way for us to receive posts
+    def get_controversial_submissions(self, time_period='week'):
+        return self.subreddit.controversial(time_period)
 
     # TODO: banned users... could be interesting
 
@@ -92,6 +102,11 @@ class Subreddit:
             items = items + [submission.author.name]
         return items
 
+    # I'm not sure if this is advisable. Kinda circumvents abstraction,
+    # but it provides a convenient way for us to receive posts
+    def get_top_submissions(self):
+        return self.subreddit.hot()
+
     ''' Top submissions
     '''
     def get_top_submission_titles(self, time='day'):
@@ -111,6 +126,11 @@ class Subreddit:
         for submission in self.subreddit.top(time):
             items = items + [submission.author.name]
         return items
+
+    # I'm not sure if this is advisable. Kinda circumvents abstraction,
+    # but it provides a convenient way for us to receive posts
+    def get_top_submissions(self, time='day'):
+        return self.subreddit.top(time)
 
     ''' Quarantined
     '''
