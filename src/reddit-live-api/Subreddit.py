@@ -2,7 +2,7 @@ import praw
 import prawcore.exceptions
 from keys import getID, getSecret, getAgent
 from bs4 import BeautifulSoup
-from Utils import scrub_text
+from Utils import scrub_text, SubmissionType
 
 
 class Subreddit:
@@ -157,6 +157,30 @@ class Subreddit:
             print('Encountered an error trying to obtain top submission text. Subreddit not found.')
         except prawcore.exceptions.Forbidden:
             print('Encountered an error trying to obtain top submission text. Access is forbidden.')
+        return items
+
+    ''' General submissions
+    '''
+    def get_submissions(self, sub_type=SubmissionType.NEW, time='week'):
+        items = []
+        submissions = []
+        try:
+            if sub_type == SubmissionType.NEW:
+                submissions = self.subreddit.new()
+            elif sub_type == SubmissionType.TOP:
+                submissions = self.subreddit.top(time)
+            elif sub_type == SubmissionType.HOT:
+                submissions = self.subreddit.hot()
+            elif sub_type == SubmissionType.CONTROVERSIAL:
+                submissions = self.subreddit.controversial(time)
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain submissions. Subreddit not found.')
+        except prawcore.exceptions.Forbidden:
+            print('Encountered an error trying to obtain submissions. Access is forbidden.')
+
+        for submission in submissions:
+            items = items + [submission]
+
         return items
 
     ''' Quarantined
