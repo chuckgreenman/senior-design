@@ -26,7 +26,6 @@ class User:
             for comment in self.user.comments.new():
                     comments = comments + [scrub_text(comment.body)]
         except prawcore.exceptions.NotFound:
-            # ignore posts from quarantined subreddits
             print('Encountered an error trying to obtain comments. Comments not found.')
             pass
         return comments
@@ -40,7 +39,6 @@ class User:
             if ranked:
                 return rank_items(subs)
         except prawcore.exceptions.NotFound:
-            # ignore posts from quarantined subreddits
             print('Encountered an error trying to obtain subreddits of comments. Comments not found.')
             pass
         return subs
@@ -51,7 +49,6 @@ class User:
             for item in self.user.comments.new():
                 items = items + [item.score]
         except prawcore.exceptions.NotFound:
-            # ignore posts from quarantined subreddits
             print('Encountered an error trying to obtain comment upvotes. Comments not found.')
             pass
         return items
@@ -60,7 +57,6 @@ class User:
         try:
             return self.user.comment_karma
         except prawcore.exceptions.NotFound:
-            # ignore posts from quarantined subreddits
             print('Encountered an error trying to obtain comment karma. Comments not found.')
             pass
         return -1
@@ -78,7 +74,6 @@ class User:
             for dv in self.user.downvoted():
                 items = items + [scrub_text(dv.title)]
         except prawcore.exceptions.NotFound:
-            # ignore posts from quarantined subreddits
             print('Encountered an error trying to obtain downvoted titles. Downvoted posts not found.')
             pass
         except prawcore.exceptions.Forbidden:
@@ -92,7 +87,6 @@ class User:
             for dv in self.user.downvoted():
                 items = items + [scrub_text(dv.selftext)]
         except prawcore.exceptions.NotFound:
-            # ignore posts from quarantined subreddits
             print('Encountered an error trying to obtain downvoted text. Downvoted posts not found.')
             pass
         except prawcore.exceptions.Forbidden:
@@ -108,7 +102,6 @@ class User:
             if ranked:
                 return rank_items(items)
         except prawcore.exceptions.NotFound:
-            # ignore posts from quarantined subreddits
             print('Encountered an error trying to obtain downvoted subreddits. Downvoted posts not found.')
             pass
         except prawcore.exceptions.Forbidden:
@@ -122,7 +115,6 @@ class User:
             for dv in self.user.downvoted():
                 items = items + [dv.upvote_ratio]
         except prawcore.exceptions.NotFound:
-            # ignore posts from quarantined subreddits
             print('Encountered an error trying to obtain downvoted updvote ratios. Downvoted posts not found.')
             pass
         except prawcore.exceptions.Forbidden:
@@ -136,7 +128,6 @@ class User:
         try:
             return self.user.link_karma
         except prawcore.exceptions.NotFound:
-            # ignore posts from quarantined subreddits
             print('Encountered an error trying to obtain link karma. Link karma not found.')
             pass
         return -1
@@ -144,11 +135,12 @@ class User:
     # TODO: potentially create a method that returns all links from comments if we end up needing it.
 
     ''' Submissions
+    This section allows us to access the user's most recent submissions.
     '''
     def get_submission_titles(self):
         items = []
         try:
-            for submission in self.user.submissions.top('all'):
+            for submission in self.user.submissions.new():
                 items = items + [submission.title]
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain submission titles. Submissions not found.')
@@ -158,7 +150,7 @@ class User:
     def get_submission_text(self):
         items = []
         try:
-            for submission in self.user.submissions.top('all'):
+            for submission in self.user.submissions.new():
                 items = items + [scrub_text(submission.selftext)]
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain submission text. Submissions not found.')
@@ -180,7 +172,7 @@ class User:
     def get_submission_upvote_ratios(self):
         items = []
         try:
-            for submission in self.user.submissions.top('all'):
+            for submission in self.user.submissions.new():
                 items = items + [submission.upvote_ratio]
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain submission upvote ratios. Submissions not found.')
@@ -244,6 +236,3 @@ class User:
             print('Encountered an error trying to obtain upvoted upvote ratios. Access to upvoted posts is forbidden.')
             pass
         return items
-
-user = User('_yobond')
-print(user.get_submission_subreddits(True))
