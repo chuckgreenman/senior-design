@@ -1,5 +1,5 @@
-from reddit_live_api.User import User
-from reddit_live_api.Subreddit import Subreddit
+from User import User
+from Subreddit import Subreddit
 
 from matplotlib import pyplot as plt
 import prawcore.exceptions

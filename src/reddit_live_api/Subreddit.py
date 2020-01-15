@@ -1,5 +1,5 @@
-from reddit_live_api.keys import getID, getSecret, getAgent
-from reddit_live_api.Utils import scrub_text
+from keys import getID, getSecret, getAgent
+from Utils import scrub_text
 import praw
 import prawcore.exceptions
 from bs4 import BeautifulSoup
@@ -83,7 +83,7 @@ class Subreddit:
     def get_hot_submission_authors(self):
         items = []
         for submission in self.subreddit.hot():
-            items = items + [scrub_text(submission.author.name)]
+            items = items + [submission.author.name]
         return items
 
     ''' Top submissions
@@ -103,7 +103,7 @@ class Subreddit:
     def get_top_submission_authors(self, time='day'):
         items = []
         for submission in self.subreddit.top(time):
-            items = items + [scrub_text(submission.author.name)]
+            items = items + [submission.author.name]
         return items
 
     ''' Quarantined
@@ -116,6 +116,3 @@ class Subreddit:
             return True
 
     # TODO: Search method could be useful but have to think about use case to implement properly.
-
-
-sub = Subreddit('askReddit')
