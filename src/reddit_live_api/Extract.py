@@ -98,9 +98,3 @@ def submission_plot_users_top_upvoted_subreddits(sr, sub_type=SubmissionType.TOP
                           filter_subs_less_than, "Top " + str(num_srs) +
                           " Most Upvoted SubReddits by {0} Current Top Submission Submitters")
 
-
-subreddit_plot_current_top_users_top_subreddits_to_submit("news")
-
-# submission_plot_commenters_other_top_subreddits(sr="conservative", match_title="clever title")
-# submission_plot_commenters_other_top_subreddits(sr="askreddit", post_num=3)
-# submission_plot_users_top_upvoted_subreddits(sr="politics")
