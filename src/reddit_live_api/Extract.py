@@ -83,7 +83,17 @@ def submission_plot_commenters_other_top_subreddits(sr, post_num=0, num_srs=3,
                           sub.title + " on r/" + sr)
 
 
+def plot_current_top_users_top_upvoted_subreddits(sr, num_srs=3, filter_subs_less_than=2):
+    sr = Subreddit(sr)
+    users = sr.get_top_submission_authors()
+
+    filter_and_plot_users(get_users_top_ranked_subs_to_action(users, num_srs, User.get_upvoted_subreddits),
+                          filter_subs_less_than, "Top " + str(num_srs) +
+                          " Most Upvoted SubReddits by {0} Current Top Submission Submitters")
+
+
 # subreddit_plot_current_top_users_top_subreddits_to_submit("dnd")
 
 # submission_plot_commenters_other_top_subreddits(sr="conservative", match_title="clever title")
-submission_plot_commenters_other_top_subreddits(sr="askreddit", post_num=3)
+# submission_plot_commenters_other_top_subreddits(sr="askreddit", post_num=3)
+plot_current_top_users_top_upvoted_subreddits(sr="politics")
