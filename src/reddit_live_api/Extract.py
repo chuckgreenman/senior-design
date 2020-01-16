@@ -1,5 +1,6 @@
 from User import User
 from Subreddit import Subreddit
+from Utils import SubmissionType
 
 from matplotlib import pyplot as plt
 from itertools import islice
@@ -30,6 +31,9 @@ def get_users_top_ranked_subs_to_action(users, num_srs, function_to_run):
 
 
 def filter_and_plot_users(users, filter_level, title):
+    # Sort users first to group data better
+    users = {k: v for k, v in sorted(users.items(), key=lambda item: item[1])}
+
     for s in users.keys():
         if users[s] >= filter_level:
             plt.barh(s, users[s])
@@ -38,25 +42,28 @@ def filter_and_plot_users(users, filter_level, title):
     plt.show()
 
 
-def subreddit_plot_current_top_users_top_subreddits_to_submit(sr, num_srs=3, filter_subs_less_than=2):
+def subreddit_plot_current_top_users_top_subreddits_to_submit(sr, sub_type=SubmissionType.TOP, num_srs=3, filter_subs_less_than=2):
     sr = Subreddit(sr)
-    users = sr.get_top_submission_authors()
+    users = sr.get_submission_authors(sub_type)
 
     filter_and_plot_users(get_users_top_ranked_subs_to_action(users, num_srs, User.get_submission_subreddits),
                           filter_subs_less_than, "Top " + str(num_srs) +
                           " Most Submitted to SubReddits by {0} Current Top Submission Submitters")
 
 
-def submission_plot_commenters_other_top_subreddits(sr, post_num=0, num_srs=3,
+def submission_plot_commenters_other_top_subreddits(sr, sub_type=SubmissionType.TOP, post_num=0, num_srs=3,
                                                     filter_subs_less_than=2, match_title=""):
     subreddit = Subreddit(sr)
 
     # Acquire the post we want examined
     if match_title == "":
-        sub = next(islice(subreddit.get_top_submissions(), post_num, None))
+        try:
+            sub = subreddit.get_submissions(sub_type)[post_num]
+        except IndexError:
+            print("Post number index out of bounds.")
     else:
         found = False
-        for p in subreddit.get_top_submissions():
+        for p in subreddit.get_submissions(sub_type):
             if p.title.lower() == match_title.lower():
                 sub = p
                 found = True
@@ -83,17 +90,17 @@ def submission_plot_commenters_other_top_subreddits(sr, post_num=0, num_srs=3,
                           sub.title + " on r/" + sr)
 
 
-def plot_current_top_users_top_upvoted_subreddits(sr, num_srs=3, filter_subs_less_than=2):
+def submission_plot_users_top_upvoted_subreddits(sr, sub_type=SubmissionType.TOP, num_srs=3, filter_subs_less_than=2):
     sr = Subreddit(sr)
-    users = sr.get_top_submission_authors()
+    users = sr.get_submission_authors(sub_type)
 
     filter_and_plot_users(get_users_top_ranked_subs_to_action(users, num_srs, User.get_upvoted_subreddits),
                           filter_subs_less_than, "Top " + str(num_srs) +
                           " Most Upvoted SubReddits by {0} Current Top Submission Submitters")
 
 
-# subreddit_plot_current_top_users_top_subreddits_to_submit("dnd")
+subreddit_plot_current_top_users_top_subreddits_to_submit("news")
 
 # submission_plot_commenters_other_top_subreddits(sr="conservative", match_title="clever title")
 # submission_plot_commenters_other_top_subreddits(sr="askreddit", post_num=3)
-plot_current_top_users_top_upvoted_subreddits(sr="politics")
+# submission_plot_users_top_upvoted_subreddits(sr="politics")

@@ -16,6 +16,15 @@ class User:
                          user_agent=self.agent)
         self.user = reddit.redditor(self.username)
 
+    def get_user_is_valid(self):
+        try:
+            test = self.user.id
+            return True
+        except prawcore.exceptions.Forbidden:
+            return False
+        except prawcore.exceptions.NotFound:
+            return False
+
     ''' Comments
     This section allows us to obtain information about comments the user has left
     '''
