@@ -15,7 +15,8 @@ class SubmissionType(Enum):
 
 class SubmissionAttribute(Enum):
     TITLE = 1,
-    TEXT = 2
+    TEXT = 2,
+    COMMENTS = 3
 
 
 class TimeFrame(Enum):
@@ -56,6 +57,8 @@ def scrub_text(comment):
     comment = re.sub('—', ' ', comment)
     comment = re.sub('’', '', comment)
     comment = re.sub('‘', '', comment)
+    comment = re.sub('”', '', comment)
+    comment = re.sub('“', '', comment)
 
     return comment
 

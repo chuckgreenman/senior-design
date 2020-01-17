@@ -88,6 +88,15 @@ class Subreddit:
             items = items + [submission.author.name]
         return items
 
+    def get_submission_comments(self, sub_type=SubmissionType.TOP, time=TimeFrame.WEEK, comment_limit=15):
+        items = []
+        submissions = self.get_submissions(sub_type, time)
+        for submission in submissions:
+            submission.comment_limit = comment_limit
+            submission.comments.replace_more(limit=0)
+            items = items + [submission.comments.list()]
+        return items
+
     ''' General submissions
     '''
     def get_submissions(self, sub_type=SubmissionType.NEW, time=TimeFrame.WEEK):
@@ -125,12 +134,16 @@ class Subreddit:
 
     ''' Word analysis
     '''
-    def get_popular_words(self, sub_type=SubmissionType.NEW, time=TimeFrame.WEEK, attribute=SubmissionAttribute.TITLE):
-        submissions = self.get_submissions(sub_type, time)
+    def get_popular_words(self, limit=10, sub_type=SubmissionType.NEW, time=TimeFrame.WEEK, attribute=SubmissionAttribute.TITLE):
         if attribute == SubmissionAttribute.TITLE:
-            sentences = [sub.title for sub in submissions]
+            sentences = self.get_submission_titles(sub_type, time)
         elif attribute == SubmissionAttribute.TEXT:
-            sentences = [sub.selftext for sub in submissions]
+            sentences = self.get_submission_text(sub_type, time)
+        elif attribute == SubmissionAttribute.COMMENTS:
+            submissions = self.get_submission_comments(sub_type, time)
+            sentences = []
+            for submission in submissions:
+                sentences += [comment.body for comment in submission]
         else:
             print("Invalid attribute for popular word analysis.")
             return []
@@ -139,4 +152,4 @@ class Subreddit:
         for sentence in sentences:
             all_words += remove_stopwords(scrub_text(sentence))
 
-        return rank_items(all_words)
+        return rank_items(all_words)[0:limit]
