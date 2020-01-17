@@ -1,9 +1,10 @@
 from User import User
 from Subreddit import Subreddit
-from Utils import SubmissionType
+from Utils import SubmissionType, sort_dictionary
 
 from matplotlib import pyplot as plt
 import prawcore.exceptions
+import networkx as nx
 
 
 # Should only call this function if the User function supports the ranking
@@ -30,7 +31,7 @@ def get_users_top_ranked_subs_to_action(users, num_srs, function_to_run):
 
 def filter_and_plot_users(users, filter_level, title):
     # Sort users first to group data better
-    users = {k: v for k, v in sorted(users.items(), key=lambda item: item[1])}
+    users = sort_dictionary(users)
 
     for s in users.keys():
         if users[s] >= filter_level:
@@ -97,8 +98,67 @@ def submission_plot_users_top_upvoted_subreddits(sr, sub_type=SubmissionType.TOP
                           " Most Upvoted SubReddits by {0} Current Top Submission Submitters")
 
 
-subreddit_plot_current_top_users_top_subreddits_to_submit("news", SubmissionType.TOP, 10)
+def create_sub_network(sr, sub_type=SubmissionType.TOP, num_srs=3, filter_subs_less_than=15):
+    # This will hold the subs and the number of users who have this sub as one of their top subs
+    # Using dicts for quicker lookup
+    srs_and_user_count_total = {}
+    # Could just use one of these, but the memory overhead is minimal and I think it's more clear this way.
+    srs_explored = {}
+    srs_to_explore = {}
+
+    # Directional graph that will store all nodes and edges
+    sub_network = nx.DiGraph()
+
+    # Tracks which sub will be explored next
+    next_sub = sr
+
+    continue_creation = True
+    while continue_creation is True:
+        # Needs to be reset on a per sub explored basis:
+        # https://www.datacamp.com/community/tutorials/social-network-analysis-python
+        subreddit = Subreddit(next_sub)
+        users = subreddit.get_submission_authors(sub_type)
+        users_top_srs = get_users_top_ranked_subs_to_action(users, num_srs, User.get_submission_subreddits)
+
+        # Track explored sub
+        srs_explored[subreddit.subreddit_name] = True
+
+        for top_sr in users_top_srs:
+            if top_sr in srs_and_user_count_total:
+                srs_and_user_count_total[top_sr] = srs_and_user_count_total[top_sr] + users_top_srs[top_sr]
+            else:
+                srs_and_user_count_total[top_sr] = users_top_srs[top_sr]
+            # Check to see if this sub's community interacts with top_sr enough to get over filter for exploration
+            if users_top_srs[top_sr] >= filter_subs_less_than and top_sr not in srs_explored:
+                srs_to_explore[top_sr] = True
+
+        # Add to graph object
+        for sub in users_top_srs:
+            if users_top_srs[sub] >= filter_subs_less_than:
+                # Ensure all edges are created
+                sub_network.add_edge(subreddit.subreddit_name, sub)
+
+        # Reset
+        next_sub = ""
+        for sub in srs_to_explore:
+            if sub not in srs_explored:
+                next_sub = sub
+                break
+
+        # If no more subs meet criteria, end exploration.
+        if next_sub == "":
+            continue_creation = False
+
+    # Space out the graph to make it nice to view and draw it.
+    nx.spring_layout(sub_network)
+    nx.draw_networkx(sub_network)
+    print(nx.info(sub_network))
+    plt.show()
+
+
+create_sub_network(sr="politics", filter_subs_less_than=10)
+# subreddit_plot_current_top_users_top_subreddits_to_submit("news", SubmissionType.TOP, 10)
 
 # submission_plot_commenters_other_top_subreddits(sr="conservative", match_title="clever title")
-# submission_plot_commenters_other_top_subreddits(sr="askreddit", post_num=3)
+# subreddit_plot_current_top_users_top_subreddits_to_submit(sr="politics")
 # submission_plot_users_top_upvoted_subreddits(sr="politics")

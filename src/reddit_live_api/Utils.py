@@ -48,3 +48,9 @@ def remove_stopwords(sentence):
     word_tokens = word_tokenize(sentence)
     filtered_sentence = [w for w in word_tokens if not w in stop_words]
     print(filtered_sentence)
+
+
+# Seems somewhat counter-intuitive to sort a dictionary, but this enables us to not need additional data structures.
+# Sorts in descending order.
+def sort_dictionary(d):
+    return {k: v for k, v in sorted(d.items(), key=lambda item: item[1])}
