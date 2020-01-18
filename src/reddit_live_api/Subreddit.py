@@ -86,7 +86,10 @@ class Subreddit:
         items = []
         submissions = self.get_submissions(sub_type, time)
         for submission in submissions:
-            items = items + [submission.author.name]
+            if submission.author is None:
+                print("Encountered an error with getting submission author's name.")
+            else:
+                items = items + [submission.author.name]
         return items
 
     ''' General submissions
