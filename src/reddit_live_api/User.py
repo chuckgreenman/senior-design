@@ -37,6 +37,9 @@ class User:
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain comments. Comments not found.')
             pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
+            pass
         return comments
 
     def get_comment_subreddits(self, ranked=False):
@@ -50,6 +53,9 @@ class User:
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain subreddits of comments. Comments not found.')
             pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
+            pass
         return subs
 
     def get_comment_upvotes(self):
@@ -60,6 +66,9 @@ class User:
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain comment upvotes. Comments not found.')
             pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
+            pass
         return items
 
     def get_comment_karma(self):
@@ -67,6 +76,9 @@ class User:
             return self.user.comment_karma
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain comment karma. Comments not found.')
+            pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
             pass
         return -1
 
@@ -88,6 +100,9 @@ class User:
         except prawcore.exceptions.Forbidden:
             print('Encountered an error trying to obtain downvoted titles. Access to downvoted posts is forbidden.')
             pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
+            pass
         return items
 
     def get_downvoted_text(self):
@@ -100,6 +115,9 @@ class User:
             pass
         except prawcore.exceptions.Forbidden:
             print('Encountered an error trying to obtain downvoted text. Access to downvoted posts is forbidden.')
+            pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
             pass
         return items
 
@@ -116,6 +134,9 @@ class User:
         except prawcore.exceptions.Forbidden:
             print('Encountered an error trying to obtain downvoted subreddits. Access to downvoted posts is forbidden.')
             pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
+            pass
         return items
 
     def get_downvoted_upvote_ratios(self):
@@ -129,6 +150,9 @@ class User:
         except prawcore.exceptions.Forbidden:
             print('Encountered an error trying to obtain downvoted upvote ratios. Access to downvoted posts is forbidden.')
             pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
+            pass
         return items
 
     ''' Links
@@ -138,6 +162,9 @@ class User:
             return self.user.link_karma
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain link karma. Link karma not found.')
+            pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
             pass
         return -1
 
@@ -154,6 +181,9 @@ class User:
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain submission titles. Submissions not found.')
             pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
+            pass
         return items
 
     def get_submission_text(self):
@@ -163,6 +193,9 @@ class User:
                 items = items + [scrub_text(submission.selftext)]
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain submission text. Submissions not found.')
+            pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
             pass
         return items
 
@@ -176,6 +209,9 @@ class User:
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain submission subreddits. Submissions not found.')
             pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
+            pass
         return items
 
     def get_submission_upvote_ratios(self):
@@ -185,6 +221,9 @@ class User:
                 items = items + [submission.upvote_ratio]
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain submission upvote ratios. Submissions not found.')
+            pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
             pass
         return items
 
@@ -203,6 +242,9 @@ class User:
         except prawcore.exceptions.Forbidden:
             print('Encountered an error trying to obtain upvoted titles. Access to upvoted posts is forbidden.')
             pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
+            pass
         return items
 
     def get_upvoted_text(self):
@@ -215,6 +257,9 @@ class User:
             pass
         except prawcore.exceptions.Forbidden:
             print('Encountered an error trying to obtain upvoted text. Access to upvoted posts is forbidden.')
+            pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
             pass
         return items
 
@@ -231,6 +276,9 @@ class User:
         except prawcore.exceptions.Forbidden:
             print('Encountered an error trying to obtain upvoted subreddits. Access to upvoted posts is forbidden.')
             pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
+            pass
         return items
 
     def get_upvoted_upvote_ratios(self):
@@ -243,5 +291,8 @@ class User:
             pass
         except prawcore.exceptions.Forbidden:
             print('Encountered an error trying to obtain upvoted upvote ratios. Access to upvoted posts is forbidden.')
+            pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
             pass
         return items
