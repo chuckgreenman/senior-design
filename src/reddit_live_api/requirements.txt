@@ -4,3 +4,4 @@ bs4==0.0.1
 nltk==3.4.5
 decorator=4.4.1
 networkx=2.4
+pygraphviz=1.5
