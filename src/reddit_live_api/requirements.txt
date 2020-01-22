@@ -2,3 +2,4 @@ praw==6.4.0
 prawcore==1.0.1
 bs4==0.0.1
 nltk==3.4.5
+flask==1.1.1
