@@ -2,7 +2,9 @@ import praw
 import prawcore.exceptions
 from keys import getID, getSecret, getAgent
 from bs4 import BeautifulSoup
-from Utils import scrub_text, SubmissionType
+from Utils import scrub_text, SubmissionType, TimeFrame, SubmissionAttribute, remove_stopwords, rank_items
+import wordcloud
+import matplotlib.pyplot as plt
 
 
 class Subreddit:
@@ -65,26 +67,25 @@ class Subreddit:
 
     # TODO: banned users... could be interesting
 
-
     ''' Submission attributes
     '''
-    def get_submission_titles(self, sub_type=SubmissionType.TOP, time='day'):
+    def get_submission_titles(self, sub_type=SubmissionType.TOP, time=TimeFrame.WEEK):
         items = []
-        submissions = self.get_submissions(sub_type, time)
+        submissions = self.get_submissions(sub_type, time.name.lower())
         for submission in submissions:
             items = items + [scrub_text(submission.title)]
         return items
 
-    def get_submission_text(self, sub_type=SubmissionType.TOP, time='day'):
+    def get_submission_text(self, sub_type=SubmissionType.TOP, time=TimeFrame.WEEK):
         items = []
-        submissions = self.get_submissions(sub_type, time)
+        submissions = self.get_submissions(sub_type, time.name.lower())
         for submission in submissions:
             items = items + [scrub_text(submission.selftext)]
         return items
 
-    def get_submission_authors(self, sub_type=SubmissionType.TOP, time='day'):
+    def get_submission_authors(self, sub_type=SubmissionType.TOP, time=TimeFrame.WEEK):
         items = []
-        submissions = self.get_submissions(sub_type, time)
+        submissions = self.get_submissions(sub_type, time.name.lower())
         for submission in submissions:
             if submission.author is None:
                 print("Encountered an error with getting submission author's name.")
@@ -92,20 +93,29 @@ class Subreddit:
                 items = items + [submission.author.name]
         return items
 
+    def get_submission_comments(self, sub_type=SubmissionType.TOP, time=TimeFrame.WEEK, comment_limit=15):
+        items = []
+        submissions = self.get_submissions(sub_type, time)
+        for submission in submissions:
+            submission.comment_limit = comment_limit
+            submission.comments.replace_more(limit=0)
+            items = items + [submission.comments.list()]
+        return items
+
     ''' General submissions
     '''
-    def get_submissions(self, sub_type=SubmissionType.NEW, time='week'):
+    def get_submissions(self, sub_type=SubmissionType.NEW, time=TimeFrame.WEEK):
         items = []
         submissions = []
         try:
             if sub_type == SubmissionType.NEW:
                 submissions = self.subreddit.new()
             elif sub_type == SubmissionType.TOP:
-                submissions = self.subreddit.top(time)
+                submissions = self.subreddit.top(time.name.lower())
             elif sub_type == SubmissionType.HOT:
                 submissions = self.subreddit.hot()
             elif sub_type == SubmissionType.CONTROVERSIAL:
-                submissions = self.subreddit.controversial(time)
+                submissions = self.subreddit.controversial(time.name.lower())
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain submissions. Subreddit not found.')
         except prawcore.exceptions.Forbidden:
@@ -126,3 +136,31 @@ class Subreddit:
             return True
 
     # TODO: Search method could be useful but have to think about use case to implement properly.
+
+    ''' Word analysis
+    '''
+    def get_popular_words(self, limit=10, sub_type=SubmissionType.NEW, time=TimeFrame.WEEK, attribute=SubmissionAttribute.TITLE):
+        if attribute == SubmissionAttribute.TITLE:
+            sentences = self.get_submission_titles(sub_type, time)
+        elif attribute == SubmissionAttribute.TEXT:
+            sentences = self.get_submission_text(sub_type, time)
+        elif attribute == SubmissionAttribute.COMMENTS:
+            submissions = self.get_submission_comments(sub_type, time)
+            sentences = []
+            for submission in submissions:
+                sentences += [comment.body for comment in submission]
+        else:
+            print("Invalid attribute for popular word analysis.")
+            return []
+
+        all_words = []
+        for sentence in sentences:
+            all_words += remove_stopwords(scrub_text(sentence))
+
+        text = ' '.join(word for word in all_words)
+        cloud = wordcloud.WordCloud().generate(text)
+        plt.imshow(cloud, interpolation='bilinear')
+        plt.axis("off")
+        plt.show()
+
+        return rank_items(all_words)[0:limit]
