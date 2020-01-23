@@ -194,16 +194,60 @@ def create_sub_network_from_top_srs(sr, sub_type=SubmissionType.TOP, num_srs=3,
     nx.draw(sub_network, pos, node_size=20, alpha=0.5, node_color="blue", with_labels=True)
     plt.axis("equal")
 
-    print(nx.info(sub_network))
     if use_comments is False:
         plt.title("Community Expansion from r/{0}\nBased on Users Top SubReddit to Submit".format(sr))
+        sub_network.name = "Community Expansion from r/{0}\nBased on Users Top SubReddit to Submit".format(sr)
     else:
         plt.title("Community Expansion from r/{0}\nBased on Users Top SubReddit to Comment On".format(sr))
+        sub_network.name = "Community Expansion from r/{0}\nBased on Users Top SubReddit to Comment On".format(sr)
+
+    print(nx.info(sub_network))
+
     plt.show()
 
 
-create_sub_network_from_top_srs(sr="cscareerquestions", filter_subs_less_than=5, max_num_nodes=10, use_comments=True)
-# TODO: Document graphviz dependency
+def analyze_user(username):
+    user = User(username)
+
+    comment_subreddits = user.get_comment_subreddits()
+
+    num_times_comment_on_subreddit = {}
+
+    for c in comment_subreddits:
+        if c in num_times_comment_on_subreddit:
+            num_times_comment_on_subreddit[c] += 1
+        else:
+            num_times_comment_on_subreddit[c] = 1
+
+    num_times_comment_on_subreddit = sort_dictionary(num_times_comment_on_subreddit)
+
+    plt.figure(1)
+    for sub in num_times_comment_on_subreddit:
+        plt.barh(sub, num_times_comment_on_subreddit[sub])
+
+    plt.show()
+
+    submissions_subreddits = user.get_submission_subreddits()
+    num_submissions_on_subreddit = {}
+
+    for s in submissions_subreddits:
+        if s in num_submissions_on_subreddit:
+            num_submissions_on_subreddit[s] += 1
+        else:
+            num_submissions_on_subreddit[s] = 1
+
+    num_submissions_on_subreddit = sort_dictionary(num_submissions_on_subreddit)
+
+    plt.figure(2)
+    for sub in submissions_subreddits:
+        plt.barh(sub, num_submissions_on_subreddit[sub])
+
+    plt.show()
+
+
+
+analyze_user("Ifch317")
+# create_sub_network_from_top_srs(sr="gamersriseup", filter_subs_less_than=5, max_num_nodes=10, use_comments=True)
 # subreddit_plot_current_top_users_top_subreddits_to_submit("news", SubmissionType.TOP, 10)
 
 # submission_plot_commenters_other_top_subreddits(sr="conservative", match_title="clever title")
