@@ -22,9 +22,10 @@
 #### 7.2 [Chuck's Biography](homework_essays/personal_bios_assignment_1/greenman_charles_professional_bio.md)
 #### 7.3 [Isaac's Biography](homework_essays/personal_bios_assignment_1/mathers_isaac_professional_bio.md)
 ### 8. [Budget](Budget.md)
-### 9. Appendix
-#### 9.1 [Time Spent per Member](Effort_Time.md)
-#### 9.2 [Citations](Citations.md)
-#### 9.3 [Source Code](src/reddit-live-api)
+### 9. [Test Plan](Test_Plan.pdf)
+### 10. Appendix
+#### 10.1 [Time Spent per Member](Effort_Time.md)
+#### 10.2 [Citations](Citations.md)
+#### 10.3 [Source Code](src/reddit-live-api)
 ## Installation/Usage
 The code in this project utilizes Python 3.6.4. More installation and usage instructions will be coming soon.
