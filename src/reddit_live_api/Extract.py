@@ -1,12 +1,13 @@
 from User import User
 from Subreddit import Subreddit
-from Utils import SubmissionType, sort_dictionary
+from Utils import SubmissionType, sort_dictionary, remove_stopwords, scrub_text
 
 from matplotlib import pyplot as plt
 from networkx.drawing.nx_agraph import graphviz_layout
 import prawcore.exceptions
 from praw.models import MoreComments
 import networkx as nx
+import wordcloud
 
 
 # Graceful way to get submissions from a subreddit
@@ -245,8 +246,26 @@ def analyze_user(username):
     plt.show()
 
 
+def wordcloud_submission_comments(sr, sub_type=SubmissionType.TOP, post_num=0, match_title=""):
+    sub = acquire_submission(sr, post_num, sub_type, match_title)
 
-analyze_user("Ifch317")
+    comments = sub.comments
+
+    all_words = []
+    for c in comments:
+        if isinstance(c, MoreComments):
+            continue
+        all_words += (remove_stopwords(c.body))
+
+    text = ' '.join(word for word in all_words)
+    cloud = wordcloud.WordCloud().generate(text)
+    plt.imshow(cloud, interpolation='bilinear')
+    plt.axis("off")
+    plt.show()
+
+
+wordcloud_submission_comments("conservative")
+#analyze_user("Ifch317")
 # create_sub_network_from_top_srs(sr="gamersriseup", filter_subs_less_than=5, max_num_nodes=10, use_comments=True)
 # subreddit_plot_current_top_users_top_subreddits_to_submit("news", SubmissionType.TOP, 10)
 
