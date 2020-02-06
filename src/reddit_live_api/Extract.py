@@ -1,6 +1,6 @@
 from User import User
 from Subreddit import Subreddit
-from Utils import SubmissionType, sort_dictionary, remove_stopwords, scrub_text
+from Utils import SubmissionType, sort_dictionary, remove_stopwords, scrub_text, rank_items
 
 from matplotlib import pyplot as plt
 from networkx.drawing.nx_agraph import graphviz_layout
@@ -262,6 +262,8 @@ def wordcloud_submission_comments(sr, sub_type=SubmissionType.TOP, post_num=0, m
     plt.imshow(cloud, interpolation='bilinear')
     plt.axis("off")
     plt.show()
+
+    return rank_items(all_words)
 
 
 wordcloud_submission_comments("conservative")
