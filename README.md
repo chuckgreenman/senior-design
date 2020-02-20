@@ -12,7 +12,9 @@
 #### 4.1 [Task List](Tasklist.md)
 #### 4.2 [Timeline](Timeline.md)
 #### 4.3 [Effort Matrix](Effort_Matrix.md)
-### 5. [Final Presentation Slideshow](Final_Presentation.pdf)
+### 5. Presentations
+#### 5.1 [Final Presentation Slideshow - Fall](Final_Presentation.pdf)
+#### 5.2 [Updates Presentation Slideshow - Spring](Updated_Presentation.pdf)
 ### 6. Self-Assessment Essays
 #### 6.1 [Anna's Essay](homework_essays/ind_capstone_assessment_assignment_3/debrunner_anna_individual_capstone_assessment.md)
 #### 6.2 [Chuck's Essay](homework_essays/ind_capstone_assessment_assignment_3/greenman_charles_individual_capstone_assesment.md)
