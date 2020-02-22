@@ -1,6 +1,6 @@
-from flask import Flask, request
+from flask import Flask
 import os
-from reddit_live_api.Subreddit import Subreddit
+from reddit_live_api.flaskr import subreddit
 
 
 def create_app():
@@ -13,14 +13,6 @@ def create_app():
     except OSError:
         pass
 
-    @app.route('/subreddit', methods=['GET'])
-    def get_subreddit():
-        subreddit_name = request.args.get('name')
-        #attribute = request.args.get('attribute')
-        if subreddit_name is None:
-            return "some parameter not provided"
-
-        subreddit = Subreddit(subreddit_name)
-        return subreddit.get_description()
+    app.register_blueprint(subreddit.bp)
 
     return app
