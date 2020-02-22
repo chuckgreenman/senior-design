@@ -16,7 +16,8 @@ class SubmissionType(Enum):
 class SubmissionAttribute(Enum):
     TITLE = 1,
     TEXT = 2,
-    COMMENTS = 3
+    COMMENTS = 3,
+    AUTHOR = 4
 
 
 class TimeFrame(Enum):
