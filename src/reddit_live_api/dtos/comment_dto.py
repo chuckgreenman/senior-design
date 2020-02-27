@@ -6,3 +6,5 @@ class CommentDto:
     def __init__(self, comment):
         self.text = comment.body
         self.author = comment.author.name
+        self.subreddit = comment.subreddit.display_name
+        self.upvotes = comment.score

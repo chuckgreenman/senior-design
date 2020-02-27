@@ -8,3 +8,5 @@ class SubmissionDto:
         self.title = scrub_text(submission.title)
         self.text = scrub_text(submission.selftext)
         self.author = submission.author.name
+        self.subreddit = submission.subreddit.display_name
+        self.upvote_ratio = submission.upvote_ratio

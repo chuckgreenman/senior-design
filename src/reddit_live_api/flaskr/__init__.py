@@ -1,6 +1,6 @@
 from flask import Flask
 import os
-from reddit_live_api.flaskr import subreddit
+from reddit_live_api.flaskr import subreddit, user
 
 
 def create_app():
@@ -14,5 +14,6 @@ def create_app():
         pass
 
     app.register_blueprint(subreddit.bp)
+    app.register_blueprint(user.bp)
 
     return app
