@@ -7,3 +7,4 @@ class UserDto:
         self.is_valid = user.get_user_is_valid()
         self.comment_karma = user.get_comment_karma()
         self.link_karma = user.get_link_karma()
+        self.top_subreddits = user.get_top_subreddits()

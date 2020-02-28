@@ -1,8 +1,8 @@
 import praw
 import prawcore.exceptions
-from keys import getID, getSecret, getAgent
+from reddit_live_api.keys import getID, getSecret, getAgent
 from bs4 import BeautifulSoup
-from Utils import scrub_text, SubmissionType, TimeFrame, SubmissionAttribute, remove_stopwords, rank_items
+from reddit_live_api.Utils import scrub_text, SubmissionType, TimeFrame, SubmissionAttribute, remove_stopwords, rank_items
 import wordcloud
 import matplotlib.pyplot as plt
 
