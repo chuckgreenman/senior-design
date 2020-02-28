@@ -12,7 +12,9 @@
 #### 4.1 [Task List](Tasklist.md)
 #### 4.2 [Timeline](Timeline.md)
 #### 4.3 [Effort Matrix](Effort_Matrix.md)
-### 5. [Final Presentation Slideshow](Final_Presentation.pdf)
+### 5. Presentations
+#### 5.1 [Final Presentation Slideshow - Fall](Final_Presentation.pdf)
+#### 5.2 [Updated Presentation Slideshow - Spring](Updated_Presentation.pdf)
 ### 6. Self-Assessment Essays
 #### 6.1 [Anna's Essay](homework_essays/ind_capstone_assessment_assignment_3/debrunner_anna_individual_capstone_assessment.md)
 #### 6.2 [Chuck's Essay](homework_essays/ind_capstone_assessment_assignment_3/greenman_charles_individual_capstone_assesment.md)
@@ -22,9 +24,10 @@
 #### 7.2 [Chuck's Biography](homework_essays/personal_bios_assignment_1/greenman_charles_professional_bio.md)
 #### 7.3 [Isaac's Biography](homework_essays/personal_bios_assignment_1/mathers_isaac_professional_bio.md)
 ### 8. [Budget](Budget.md)
-### 9. Appendix
-#### 9.1 [Time Spent per Member](Effort_Time.md)
-#### 9.2 [Citations](Citations.md)
-#### 9.3 [Source Code](src/reddit_live_api)
+### 9. [Test Plan](Test_Plan.pdf)
+### 10. Appendix
+#### 10.1 [Time Spent per Member](Effort_Time.md)
+#### 10.2 [Citations](Citations.md)
+#### 10.3 [Source Code](src)
 ## Installation/Usage
 The code in this project utilizes Python 3.6.4. More installation and usage instructions will be coming soon.
