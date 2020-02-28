@@ -25,6 +25,18 @@ class User:
         except prawcore.exceptions.NotFound:
             return False
 
+    def get_top_subreddits(self):
+        comment_subs = self.get_comment_subreddits()
+        submission_subs = self.get_submission_subreddits()
+        all_subs = comment_subs + submission_subs
+
+        rank_dict = rank_items(all_subs, True)
+
+        rank_prop_dict = {item: (rank_dict[item]/len(all_subs)) for item in rank_dict.keys()}
+
+        sorted_rank_prop_dict = {k: v for k, v in sorted(rank_prop_dict.items(), key=lambda item: item[1], reverse=True)}
+        return sorted_rank_prop_dict
+
     ''' Comments
     This section allows us to obtain information about comments the user has left
     '''
@@ -324,3 +336,6 @@ class User:
             print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
             pass
         return items
+
+user = User('hawksoul12')
+print(user.get_top_subreddits())

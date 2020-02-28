@@ -29,8 +29,10 @@ class TimeFrame(Enum):
     ALL = 'all'
 
 
-def rank_items(items):
+def rank_items(items, return_dict=False):
     counts = collections.Counter(items)
+    if return_dict:
+        return counts
     new_list = sorted(items, key=lambda x: (counts[x], x), reverse=True)
     items = list(dict.fromkeys(new_list))
     return items
