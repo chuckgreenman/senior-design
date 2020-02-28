@@ -1,16 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
+import About from './components/About.vue'
+import Home from './components/Home.vue'
+import Search from './components/Search.vue'
 
 Vue.config.productionTip = false
-
-const Foo = { template: '<div>foo</div>' }
-const Bar = { template: '<div>bar</div>' }
-
+Vue.use(VueRouter)
 
 const routes = [
-  { path: '/foo', component: Foo },
-  { path: '/bar', component: Bar }
+  { path: '/about', component: About },
+  { path: '/home', component: Home },
+  { path: '/search', component: Search}
 ]
 
 const router = new VueRouter({
@@ -22,4 +23,3 @@ new Vue({
   render: h => h(App),
 }).$mount('#app')
 
-Vue.use(VueRouter)

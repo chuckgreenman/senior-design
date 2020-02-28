@@ -3,8 +3,9 @@
     <div class="menu">
       <img id="logo" src="./assets/oscar_logo.png" alt="Oscar logo"> 
       <div class="items">
-        <div class="item"><router-link to="/">Home</router-link></div>
+        <div class="item"><router-link to="/home">Home</router-link></div>
         <div class="item"><router-link to="/about">About</router-link></div>
+        <div class="item"><router-link to="/search">Search</router-link></div>
       </div>
     </div>
     <router-view></router-view>
