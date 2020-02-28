@@ -1,7 +1,7 @@
 import praw
 import prawcore.exceptions
-from keys import getID, getSecret, getAgent
-from Utils import scrub_text, rank_items
+from reddit_live_api.keys import getID, getSecret, getAgent
+from reddit_live_api.Utils import scrub_text, rank_items
 
 
 class User:
@@ -33,7 +33,7 @@ class User:
         comments = []
         try:
             for comment in self.user.comments.new():
-                    comments = comments + [scrub_text(comment.body)]
+                    comments = comments + [comment]
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain comments. Comments not found.')
             pass
@@ -85,6 +85,9 @@ class User:
     ''' Downvotes
     This section allows the us to obtain information about posts the user has downvoted,
     indicating that they disagree with the content of the post.
+
+    NOTE: Pretty sure this section is actually useless because you have to opt in to make your downvotes visible.
+    Leaving the code here for now but not implementing it in the Flask requests.
     '''
 
     def get_downvoted_titles(self):
@@ -173,6 +176,16 @@ class User:
     ''' Submissions
     This section allows us to access the user's most recent submissions.
     '''
+    def get_submissions(self):
+        items = []
+        try:
+            for submission in self.user.submissions.new():
+                items = items + [submission]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain submissions. Submissions not found.')
+            pass
+        return items
+
     def get_submission_titles(self):
         items = []
         try:
@@ -230,7 +243,22 @@ class User:
     # TODO: get URLs that the submissions link to, if necessary
 
     ''' Upvoted
+
+    NOTE: This appears to have the same issue as downvotes :(
     '''
+    def get_upvotes(self):
+        items = []
+        try:
+            for uv in self.user.upvoted():
+                items = items + [uv]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain upvoted titles. Upvotes not found.')
+            pass
+        except prawcore.exceptions.Forbidden:
+            print('Encountered an error trying to obtain upvoted titles. Access to upvoted posts is forbidden.')
+            pass
+        return items
+
     def get_upvoted_titles(self):
         items = []
         try:

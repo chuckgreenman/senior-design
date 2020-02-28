@@ -14,10 +14,10 @@ class Subreddit:
         self.secret = getSecret()
         self.agent = getAgent()
         self.subreddit_name = subreddit_name
-        self.reddit = reddit = praw.Reddit(client_id= self.ID,
-                         client_secret=self.secret,
-                         user_agent=self.agent)
-        self.subreddit = reddit.subreddit(self.subreddit_name)
+        self.reddit = praw.Reddit(client_id=self.ID,
+                                  client_secret=self.secret,
+                                  user_agent=self.agent)
+        self.subreddit = self.reddit.subreddit(self.subreddit_name)
 
     # This method checks that a subreddit exists and is not quarantined. Note: we are currently not
     # supporting the analysis of quarantined subreddits due to potential issues this may cause.
@@ -54,11 +54,11 @@ class Subreddit:
 
     ''' Recent activity
     '''
-    def get_recent_comments(self, number=100):
+    def get_comments(self, number=100):
         items = []
         try:
             for comment in self.subreddit.comments(limit=number):
-                items = items + [scrub_text(comment.body)]
+                items = items + [comment]
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain recent comments. Subreddit not found.')
         except prawcore.exceptions.Forbidden:
@@ -71,21 +71,21 @@ class Subreddit:
     '''
     def get_submission_titles(self, sub_type=SubmissionType.TOP, time=TimeFrame.WEEK):
         items = []
-        submissions = self.get_submissions(sub_type, time.name.lower())
+        submissions = self.get_submissions(sub_type, time)
         for submission in submissions:
             items = items + [scrub_text(submission.title)]
         return items
 
     def get_submission_text(self, sub_type=SubmissionType.TOP, time=TimeFrame.WEEK):
         items = []
-        submissions = self.get_submissions(sub_type, time.name.lower())
+        submissions = self.get_submissions(sub_type, time)
         for submission in submissions:
             items = items + [scrub_text(submission.selftext)]
         return items
 
     def get_submission_authors(self, sub_type=SubmissionType.TOP, time=TimeFrame.WEEK):
         items = []
-        submissions = self.get_submissions(sub_type, time.name.lower())
+        submissions = self.get_submissions(sub_type, time)
         for submission in submissions:
             if submission.author is None:
                 print("Encountered an error with getting submission author's name.")
