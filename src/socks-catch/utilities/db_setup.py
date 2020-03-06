@@ -20,5 +20,3 @@ class DbSetup():
         sqlite_curs.execute(query)
 
     print("Configured development.db")
-
-dbs = DbSetup("development")
