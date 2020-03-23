@@ -1,17 +1,20 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="OSCAR logo" src="./assets/oscar_logo.png">    
+    <OscarHeader/>
+    <MainTable/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import OscarHeader from './components/Header.vue'
+import MainTable from './components/MainTable.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  components: {    
+    OscarHeader,
+    MainTable
   }
 }
 </script>
