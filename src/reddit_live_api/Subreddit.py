@@ -3,8 +3,7 @@ import prawcore.exceptions
 from reddit_live_api.keys import getID, getSecret, getAgent
 from bs4 import BeautifulSoup
 from reddit_live_api.Utils import scrub_text, SubmissionType, TimeFrame, SubmissionAttribute, remove_stopwords, rank_items
-import wordcloud
-import matplotlib.pyplot as plt
+from reddit_live_api.User import User
 
 
 class Subreddit:
@@ -137,30 +136,67 @@ class Subreddit:
 
     # TODO: Search method could be useful but have to think about use case to implement properly.
 
-    ''' Word analysis
+    ''' Extra analysis
     '''
-    def get_popular_words(self, limit=10, sub_type=SubmissionType.NEW, time=TimeFrame.WEEK, attribute=SubmissionAttribute.TITLE):
-        if attribute == SubmissionAttribute.TITLE:
-            sentences = self.get_submission_titles(sub_type, time)
-        elif attribute == SubmissionAttribute.TEXT:
-            sentences = self.get_submission_text(sub_type, time)
-        elif attribute == SubmissionAttribute.COMMENTS:
-            submissions = self.get_submission_comments(sub_type, time)
-            sentences = []
-            for submission in submissions:
-                sentences += [comment.body for comment in submission]
-        else:
-            print("Invalid attribute for popular word analysis.")
-            return []
+    def get_popular_words(self):
+        submission_titles = self.get_submission_titles()
+        submission_text = self.get_submission_text()
+
+        all_text = submission_titles + submission_text
 
         all_words = []
-        for sentence in sentences:
+        for sentence in all_text:
             all_words += remove_stopwords(scrub_text(sentence))
 
-        text = ' '.join(word for word in all_words)
-        cloud = wordcloud.WordCloud().generate(text)
-        plt.imshow(cloud, interpolation='bilinear')
-        plt.axis("off")
-        plt.show()
+        rank_dict = rank_items(all_words, True)
 
-        return rank_items(all_words)[0:limit]
+        sorted_rank_dict = {k: v for k, v in sorted(rank_dict.items(), key=lambda item: item[1], reverse=True) if v > 4}
+        return sorted_rank_dict
+
+    def create_subreddit_graph(self):
+        num_nodes = 1
+        current_subreddit = self.subreddit_name
+        to_explore = [current_subreddit]
+        explored = []
+        edges = {}
+        while num_nodes < 10:
+            subreddit = Subreddit(current_subreddit)
+            top_authors = subreddit.get_submission_authors()[:20]  # Get authors of recent popular posts
+            subreddit_candidates = {}
+
+            for author in top_authors:
+                author_user = User(author)  # Create a User object for each author so we can get top subs
+                author_top_subs_dict = author_user.get_top_subreddits()
+                author_top_subs = list(author_top_subs_dict.keys())[:3]
+
+                for sub in author_top_subs:
+                    if sub in subreddit_candidates:
+                        subreddit_candidates[sub] += 1
+                    else:
+                        subreddit_candidates[sub] = 1
+
+            filtered_subs = [k for k, v in subreddit_candidates.items() if ((v >= 2) and (k != current_subreddit))]
+
+            # If no connected subreddits pass the threshold, either explore a new node or quit exploring
+            if len(filtered_subs) == 0:
+                if len(to_explore) > 0:  # Explore the next viable node
+                    explored += to_explore.pop(0)
+                    if len(to_explore) > 0:
+                        current_subreddit = to_explore[0]
+                else:  # If there are no more viable nodes to explore, just quit
+                    num_nodes = 11  # force quit
+            else:
+                # Add edges to the dictionary for any related subreddit that has enough activity
+                if current_subreddit in edges:
+                    edges[current_subreddit] = edges[current_subreddit] + filtered_subs
+                else:
+                    edges[current_subreddit] = filtered_subs
+
+                # Update the number of nodes now that we've added edges
+                filtered_subs = [val for val in filtered_subs if val not in explored]  # alter so only includes new subs
+                num_nodes += len(filtered_subs)
+                # Remove the first element of the list of nodes to explore because we've explored it
+                explored += to_explore.pop(0)
+                to_explore += filtered_subs
+                current_subreddit = to_explore[0]
+        return edges

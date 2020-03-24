@@ -8,3 +8,4 @@ class UserDto:
         self.comment_karma = user.get_comment_karma()
         self.link_karma = user.get_link_karma()
         self.top_subreddits = user.get_top_subreddits()
+        self.popular_words = user.get_popular_words()

@@ -1,7 +1,7 @@
 import praw
 import prawcore.exceptions
 from reddit_live_api.keys import getID, getSecret, getAgent
-from reddit_live_api.Utils import scrub_text, rank_items
+from reddit_live_api.Utils import scrub_text, rank_items, remove_stopwords
 
 
 class User:
@@ -32,10 +32,24 @@ class User:
 
         rank_dict = rank_items(all_subs, True)
 
-        rank_prop_dict = {item: (rank_dict[item]/len(all_subs)) for item in rank_dict.keys()}
+        sorted_rank_dict = {k: v for k, v in sorted(rank_dict.items(), key=lambda item: item[1], reverse=True) if v > 4}
+        return sorted_rank_dict
 
-        sorted_rank_prop_dict = {k: v for k, v in sorted(rank_prop_dict.items(), key=lambda item: item[1], reverse=True)}
-        return sorted_rank_prop_dict
+    def get_popular_words(self):
+        submission_titles = self.get_submission_titles()
+        submission_text = self.get_submission_text()
+        comment_text = self.get_comments_text()
+
+        all_text = submission_titles + submission_text + comment_text
+
+        all_words = []
+        for sentence in all_text:
+            all_words += remove_stopwords(scrub_text(sentence))
+
+        rank_dict = rank_items(all_words, True)
+
+        sorted_rank_dict = {k: v for k, v in sorted(rank_dict.items(), key=lambda item: item[1], reverse=True) if v > 4}
+        return sorted_rank_dict
 
     ''' Comments
     This section allows us to obtain information about comments the user has left
@@ -46,6 +60,19 @@ class User:
         try:
             for comment in self.user.comments.new():
                     comments = comments + [comment]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain comments. Comments not found.')
+            pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
+            pass
+        return comments
+
+    def get_comments_text(self):
+        comments = []
+        try:
+            for comment in self.user.comments.new():
+                comments = comments + [comment.body]
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain comments. Comments not found.')
             pass
@@ -336,6 +363,3 @@ class User:
             print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
             pass
         return items
-
-user = User('hawksoul12')
-print(user.get_top_subreddits())
