@@ -1,0 +1,55 @@
+<template>
+  <v-card
+    class="mx-auto" 
+    outlined>
+    <v-tabs
+        fixed-tabs
+        background-color="orange"
+        dark>
+        <v-tab>
+        User
+        </v-tab>
+        <v-tab>
+        SubReddit
+        </v-tab>
+        <v-tab>
+        Submission
+        </v-tab>    
+    
+        <v-tab-item>
+            <v-card flat>
+                <v-container>
+                <v-row>
+                    <v-col>
+                    <v-text-field
+                        label="User"
+                        single-line
+                    ></v-text-field>
+                    </v-col>
+                    <v-col>
+                    <v-btn>Execute</v-btn>
+                    </v-col>
+                </v-row>
+                </v-container>
+            </v-card>
+        </v-tab-item>
+        <v-tab-item>
+            <v-card flat>
+                <v-container>
+                <v-row>
+                    <v-col>
+                    <v-text-field
+                        label="SubReddit"
+                        single-line
+                    ></v-text-field>
+                    </v-col>
+                    <v-col>
+                    <v-btn>Execute</v-btn>
+                    </v-col>
+                </v-row>
+                </v-container>
+            </v-card>
+        </v-tab-item> 
+    </v-tabs>
+  </v-card>
+</template>
