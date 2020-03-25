@@ -3,6 +3,7 @@ from reddit_live_api.Subreddit import Subreddit
 from reddit_live_api.dtos.subreddit_dto import SubredditDto
 from reddit_live_api.dtos.submission_dto import SubmissionDto
 from reddit_live_api.dtos.comment_dto import CommentDto
+from reddit_live_api.dtos.related_dto import RelatedDto
 from reddit_live_api.Utils import SubmissionType, TimeFrame
 import json
 
@@ -55,5 +56,22 @@ def get_subreddit_comments():
     return json.dumps([dto.__dict__ for dto in comments_dtos])
 
 
+@bp.route("/related", methods=["GET"])
+def get_related_subreddits():
+    subreddit_name = request.args.get('name')
+    create_graph = request.args.get('create_graph')
+
+    if create_graph is None or str.lower(create_graph) == 'false':
+        create_graph = False
+    elif  str.lower(create_graph) == 'true':
+        create_graph = True
+    else:
+        return "The request could not be completed because a required parameter (graph) was not provided"
+
+    if subreddit_name is None:
+        return "The request could not be completed because a required parameter (name) was not provided"
+
+    sub = Subreddit(subreddit_name)
+    return json.dumps(RelatedDto(sub, create_graph).__dict__)
 
 

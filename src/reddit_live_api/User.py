@@ -1,7 +1,8 @@
 import praw
 import prawcore.exceptions
 from reddit_live_api.keys import getID, getSecret, getAgent
-from reddit_live_api.Utils import scrub_text, rank_items
+from reddit_live_api.Utils import scrub_text, rank_items, remove_stopwords, ignore_website
+from urllib.parse import urlparse
 
 
 class User:
@@ -25,6 +26,47 @@ class User:
         except prawcore.exceptions.NotFound:
             return False
 
+    def get_top_subreddits(self):
+        comment_subs = self.get_comment_subreddits()
+        submission_subs = self.get_submission_subreddits()
+        all_subs = comment_subs + submission_subs
+
+        rank_dict = rank_items(all_subs, True)
+
+        sorted_rank_dict = {k: v for k, v in sorted(rank_dict.items(), key=lambda item: item[1], reverse=True) if v > 4}
+        return sorted_rank_dict
+
+    def get_popular_words(self):
+        submission_titles = self.get_submission_titles()
+        submission_text = self.get_submission_text()
+        comment_text = self.get_comments_text()
+
+        all_text = submission_titles + submission_text + comment_text
+
+        all_words = []
+        for sentence in all_text:
+            all_words += remove_stopwords(scrub_text(sentence))
+
+        rank_dict = rank_items(all_words, True)
+
+        sorted_rank_dict = {k: v for k, v in sorted(rank_dict.items(), key=lambda item: item[1], reverse=True) if v > 4}
+        return sorted_rank_dict
+
+    def get_most_linked_websites(self):
+        links = self.get_submission_links()
+        scrubbed_links = [urlparse(link).netloc for link in links]
+        scrubbed_links = [link.replace('www.', '') for link in scrubbed_links if not any(x in link for x in ignore_website)]
+
+        rank_dict = rank_items(scrubbed_links, True)
+
+        sorted_rank_dict = {k: v for k, v in sorted(rank_dict.items(), key=lambda item: item[1], reverse=True)}
+        return sorted_rank_dict
+
+    def get_proportion_controversial(self):
+        votes = self.get_submission_upvote_ratios()
+        count = sum(map(lambda x: (x <= 0.75) is True, votes))
+        return {'controversial': count, 'non-controversial': (len(votes)-count)}
+
     ''' Comments
     This section allows us to obtain information about comments the user has left
     '''
@@ -34,6 +76,19 @@ class User:
         try:
             for comment in self.user.comments.new():
                     comments = comments + [comment]
+        except prawcore.exceptions.NotFound:
+            print('Encountered an error trying to obtain comments. Comments not found.')
+            pass
+        except prawcore.exceptions.ResponseException:
+            print("Encountered an error receiving a response from Reddit. Generally temporary. Failing gracefully.")
+            pass
+        return comments
+
+    def get_comments_text(self):
+        comments = []
+        try:
+            for comment in self.user.comments.new():
+                comments = comments + [comment.body]
         except prawcore.exceptions.NotFound:
             print('Encountered an error trying to obtain comments. Comments not found.')
             pass
@@ -240,7 +295,13 @@ class User:
             pass
         return items
 
-    # TODO: get URLs that the submissions link to, if necessary
+    def get_submission_links(self):
+        items = []
+        submissions = self.user.submissions.new()
+        for submission in submissions:
+            if submission.url is not None:
+                items = items + [submission.url]
+        return items
 
     ''' Upvoted
 

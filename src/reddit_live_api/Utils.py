@@ -5,6 +5,8 @@ from enum import Enum
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
+ignore_website = ['redd.it', 'imgur.com', 'www.reddit.com', 'youtu.be', 'twitter']
+
 
 class SubmissionType(Enum):
     NEW = 1,
@@ -29,8 +31,10 @@ class TimeFrame(Enum):
     ALL = 'all'
 
 
-def rank_items(items):
+def rank_items(items, return_dict=False):
     counts = collections.Counter(items)
+    if return_dict:
+        return counts
     new_list = sorted(items, key=lambda x: (counts[x], x), reverse=True)
     items = list(dict.fromkeys(new_list))
     return items
@@ -73,6 +77,7 @@ def remove_stopwords(sentence, tokenized=False):
         word_tokens = word_tokenize(sentence)
     filtered_sentence = [w for w in word_tokens if not w in stop_words]
     return filtered_sentence
+
 
 # Seems somewhat counter-intuitive to sort a dictionary, but this enables us to not need additional data structures.
 # Sorts in descending order.
