@@ -10,3 +10,4 @@ class SubredditDto:
         self.is_valid = subreddit.check_subreddit_valid()
         self.is_quarantined = subreddit.get_is_quarantined()
         self.popular_words = subreddit.get_popular_words()
+        self.most_linked_websites = subreddit.get_most_linked_websites()

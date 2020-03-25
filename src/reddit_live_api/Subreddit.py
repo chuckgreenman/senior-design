@@ -2,8 +2,9 @@ import praw
 import prawcore.exceptions
 from reddit_live_api.keys import getID, getSecret, getAgent
 from bs4 import BeautifulSoup
-from reddit_live_api.Utils import scrub_text, SubmissionType, TimeFrame, SubmissionAttribute, remove_stopwords, rank_items
+from reddit_live_api.Utils import scrub_text, SubmissionType, TimeFrame, remove_stopwords, rank_items, ignore_website
 from reddit_live_api.User import User
+from urllib.parse import urlparse
 
 
 class Subreddit:
@@ -101,6 +102,14 @@ class Subreddit:
             items = items + [submission.comments.list()]
         return items
 
+    def get_submission_links(self, sub_type=SubmissionType.TOP, time=TimeFrame.WEEK):
+        items = []
+        submissions = self.get_submissions(sub_type, time)
+        for submission in submissions:
+            if submission.url is not None:
+                items = items + [submission.url]
+        return items
+
     ''' General submissions
     '''
     def get_submissions(self, sub_type=SubmissionType.NEW, time=TimeFrame.WEEK):
@@ -138,6 +147,7 @@ class Subreddit:
 
     ''' Extra analysis
     '''
+    # Gets most used words from top post titles and body text
     def get_popular_words(self):
         submission_titles = self.get_submission_titles()
         submission_text = self.get_submission_text()
@@ -153,13 +163,35 @@ class Subreddit:
         sorted_rank_dict = {k: v for k, v in sorted(rank_dict.items(), key=lambda item: item[1], reverse=True) if v > 4}
         return sorted_rank_dict
 
+    # Analyzes all recent authors of top posts to get any subreddits that have a strong association
+    def get_related_subreddits(self):
+        top_authors = self.get_submission_authors()[:30]  # Get authors of recent popular posts
+        subreddit_candidates = {}
+
+        for author in top_authors:
+            author_user = User(author)  # Create a User object for each author so we can get top subs
+            author_top_subs_dict = author_user.get_top_subreddits()
+            author_top_subs = list(author_top_subs_dict.keys())[:3]
+
+            for sub in author_top_subs:
+                if sub in subreddit_candidates:
+                    subreddit_candidates[sub] += 1
+                else:
+                    subreddit_candidates[sub] = 1
+
+        filtered_subs = [k for k, v in subreddit_candidates.items() if ((v >= 3) and (k != self.subreddit_name))]
+
+        return filtered_subs
+
+    # A more in depth version of above; instead of stopping at first association, sees what's associated with those,
+    # and so on, to create a graph of related subreddit activity
     def create_subreddit_graph(self):
         num_nodes = 1
         current_subreddit = self.subreddit_name
         to_explore = [current_subreddit]
         explored = []
         edges = {}
-        while num_nodes < 10:
+        while num_nodes < 5:
             subreddit = Subreddit(current_subreddit)
             top_authors = subreddit.get_submission_authors()[:20]  # Get authors of recent popular posts
             subreddit_candidates = {}
@@ -200,3 +232,13 @@ class Subreddit:
                 to_explore += filtered_subs
                 current_subreddit = to_explore[0]
         return edges
+
+    def get_most_linked_websites(self):
+        links = self.get_submission_links()
+        scrubbed_links = [urlparse(link).netloc for link in links]
+        scrubbed_links = [link.replace('www.', '') for link in scrubbed_links if not any(x in link for x in ignore_website)]
+
+        rank_dict = rank_items(scrubbed_links, True)
+
+        sorted_rank_dict = {k: v for k, v in sorted(rank_dict.items(), key=lambda item: item[1], reverse=True)}
+        return sorted_rank_dict

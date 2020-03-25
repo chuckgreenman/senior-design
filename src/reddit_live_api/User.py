@@ -1,7 +1,8 @@
 import praw
 import prawcore.exceptions
 from reddit_live_api.keys import getID, getSecret, getAgent
-from reddit_live_api.Utils import scrub_text, rank_items, remove_stopwords
+from reddit_live_api.Utils import scrub_text, rank_items, remove_stopwords, ignore_website
+from urllib.parse import urlparse
 
 
 class User:
@@ -49,6 +50,16 @@ class User:
         rank_dict = rank_items(all_words, True)
 
         sorted_rank_dict = {k: v for k, v in sorted(rank_dict.items(), key=lambda item: item[1], reverse=True) if v > 4}
+        return sorted_rank_dict
+
+    def get_most_linked_websites(self):
+        links = self.get_submission_links()
+        scrubbed_links = [urlparse(link).netloc for link in links]
+        scrubbed_links = [link.replace('www.', '') for link in scrubbed_links if not any(x in link for x in ignore_website)]
+
+        rank_dict = rank_items(scrubbed_links, True)
+
+        sorted_rank_dict = {k: v for k, v in sorted(rank_dict.items(), key=lambda item: item[1], reverse=True)}
         return sorted_rank_dict
 
     ''' Comments
@@ -279,7 +290,13 @@ class User:
             pass
         return items
 
-    # TODO: get URLs that the submissions link to, if necessary
+    def get_submission_links(self):
+        items = []
+        submissions = self.user.submissions.new()
+        for submission in submissions:
+            if submission.url is not None:
+                items = items + [submission.url]
+        return items
 
     ''' Upvoted
 
