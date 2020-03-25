@@ -62,6 +62,11 @@ class User:
         sorted_rank_dict = {k: v for k, v in sorted(rank_dict.items(), key=lambda item: item[1], reverse=True)}
         return sorted_rank_dict
 
+    def get_proportion_controversial(self):
+        votes = self.get_submission_upvote_ratios()
+        count = sum(map(lambda x: (x <= 0.75) is True, votes))
+        return {'controversial': count, 'non-controversial': (len(votes)-count)}
+
     ''' Comments
     This section allows us to obtain information about comments the user has left
     '''

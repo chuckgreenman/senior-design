@@ -110,6 +110,14 @@ class Subreddit:
                 items = items + [submission.url]
         return items
 
+    def get_submission_upvote_ratios(self, sub_type=SubmissionType.TOP, time=TimeFrame.WEEK):
+        items = []
+        submissions = self.get_submissions(sub_type, time)
+        print(len(submissions))
+        for submission in submissions:
+                items = items + [submission.upvote_ratio]
+        return items
+
     ''' General submissions
     '''
     def get_submissions(self, sub_type=SubmissionType.NEW, time=TimeFrame.WEEK):
@@ -242,3 +250,9 @@ class Subreddit:
 
         sorted_rank_dict = {k: v for k, v in sorted(rank_dict.items(), key=lambda item: item[1], reverse=True)}
         return sorted_rank_dict
+
+    def get_proportion_controversial(self):
+        votes = self.get_submission_upvote_ratios()
+        print(len(votes))
+        count = sum(map(lambda x: (x <= 0.75) is True, votes))
+        return {'controversial': count, 'non-controversial': (len(votes)-count)}

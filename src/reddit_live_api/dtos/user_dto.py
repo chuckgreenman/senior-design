@@ -10,3 +10,4 @@ class UserDto:
         self.top_subreddits = user.get_top_subreddits()
         self.popular_words = user.get_popular_words()
         self.most_linked_websites = user.get_most_linked_websites()
+        self.proportion_controversial_posts = user.get_proportion_controversial()
