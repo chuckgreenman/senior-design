@@ -64,47 +64,26 @@ export default {
       // Will get user in user textfield and perform
       // http get request to flask server at 127.0.0.1
       // TODO: Check for blank user name
-    getUser: function () {      
-      console.log("In getUser2") 
-      
-      axios.get('http://localhost:5000/user', { headers: {
-	  'Access-Control-Allow-Origin': '*',
-	}, params: { name: this.user }}, {timeout: 0})
+    getUser: function () {                  
+      axios.get('http://localhost:5000/user', {         
+         params: { name: this.user }}, {timeout: 0})
       .then((response) => {
         console.log(response);
       }, (error) => {
         console.log(error);
-      });            
-    //   this.$http.get('http://localhost:5000/user', {params: {name: this.user}}).then(response => {
- 
-    //     // get body data
-    //     this.someData = response.body;
-    //     console.log(this.someData)
-    //     }, response => {
-    //     // error callback
-    //     console.log('Error: ' + response.body)
-    // });
+      });                
     },
        // Will get subreddit in subreddit textfield and perform
       // http get request to flask server at 127.0.0.1
       // TODO: Check for blank user name
-    getSubReddit: function () {    
-      console.log("In getsubreddit")  
-      axios.get('http://localhost:5000/subreddit', { params: { name: this.subreddit }})
+    getSubReddit: function () {           
+      axios.get('http://localhost:5000/subreddit', {         
+         params: { name: this.subreddit }}, {timeout: 0})
       .then((response) => {
         console.log(response);
       }, (error) => {
         console.log(error);
-      });             
-    //   this.$http.get('http://localhost:5000/subreddit', {params: {name: this.subreddit}}).then(response => {
- 
-    //     // get body data
-    //     this.someData = response.body;
-    //     console.log(this.someData)
-    //     }, response => {
-    //     // error callback
-    //     console.log('Error: ' + response.body)
-    // });
+      });                 
     }
   }  
 }
