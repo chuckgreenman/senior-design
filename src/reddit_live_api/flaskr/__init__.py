@@ -1,11 +1,14 @@
 from flask import Flask
 import os
 from reddit_live_api.flaskr import subreddit, user
+from flask_cors import CORS
 
 
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
+    CORS(app)
+    
 
     # ensure the instance folder exists
     try:
