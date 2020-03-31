@@ -187,7 +187,7 @@ class Subreddit:
                 else:
                     subreddit_candidates[sub] = 1
 
-        filtered_subs = [k for k, v in subreddit_candidates.items() if ((v >= 3) and (k != self.subreddit_name))]
+        filtered_subs = {k: v for k, v in subreddit_candidates.items() if ((v >= 3) and (k != self.subreddit_name))}
 
         return filtered_subs
 

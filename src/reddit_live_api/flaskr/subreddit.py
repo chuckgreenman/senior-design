@@ -63,7 +63,7 @@ def get_related_subreddits():
 
     if create_graph is None or str.lower(create_graph) == 'false':
         create_graph = False
-    elif  str.lower(create_graph) == 'true':
+    elif str.lower(create_graph) == 'true':
         create_graph = True
     else:
         return "The request could not be completed because a required parameter (graph) was not provided"
