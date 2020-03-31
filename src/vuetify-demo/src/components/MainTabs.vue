@@ -71,7 +71,10 @@
                 <v-layout row>
                     <v-flex md6>
                     <h3> Proportion of Controversial Posts on r/{{this.subreddit}} </h3> 
-                    </v-flex>                    
+                    </v-flex>     
+                    <v-flex md6>
+                    <h3> SubReddits that Users of r/{{this.subreddit}} Also Post on </h3> 
+                    </v-flex>               
                 </v-layout>
 
                 <v-layout row>
@@ -81,6 +84,18 @@
                     <v-flex md6>
                     <v-chart :options="initSubRedditRelationChart"></v-chart> 
                     </v-flex>                     
+                </v-layout> 
+
+                <v-layout row>
+                    <v-flex md12>
+                    <h3> Community Expansion from r/{{this.subreddit}} </h3> 
+                    </v-flex>                                             
+                </v-layout> 
+
+                <v-layout row>
+                    <v-flex md12>
+                    <v-chart :options="fullSubRedditRelationChart"></v-chart> 
+                    </v-flex>                                              
                 </v-layout> 
                                               
                 </v-container>
@@ -200,7 +215,9 @@ export default {
         series_data = [];
         // Fill series_data in expected format
         for (key in response.data.most_linked_websites){
-          series_data.push({value: response.data.most_linked_websites[key], name: key});
+          if (response.data.most_linked_websites[key] > 1){
+            series_data.push({value: response.data.most_linked_websites[key], name: key});
+          }          
         }
         // Build data for popular links chart
         this.popularLinksChart = {          
@@ -299,50 +316,97 @@ export default {
         axios.get('http://localhost:5000/subreddit/related', {         
           params: { name: this.subreddit, create_graph: 'True' }}, {timeout: 0})
         .then((response) => {
-          console.log(response);
+          series_data = [['count', 'subreddit']];
 
-          this.initSubRedditRelationChart = {
+        var max_value = 0; // Used for visual map in initSubRedditRelationChart
+        // Fill series_data in expected format
+        for (key in response.data.related_subreddits){
+          series_data.push([response.data.related_subreddits[key], key]);
+          if (response.data.related_subreddits[key] > max_value){
+            max_value = response.data.related_subreddits[key];
+          }
+        }
+
+        this.initSubRedditRelationChart = {
             dataset: {
-                source: [
-                    ['score', 'amount', 'product'],
-                    [89.3, 58212, 'Matcha Latte'],
-                    [57.1, 78254, 'Milk Tea'],
-                    [74.4, 41032, 'Cheese Cocoa'],
-                    [50.1, 12755, 'Cheese Brownie'],
-                    [89.7, 20145, 'Matcha Cocoa'],
-                    [68.1, 79146, 'Tea'],
-                    [19.6, 91852, 'Orange Juice'],
-                    [10.6, 101852, 'Lemon Juice'],
-                    [32.7, 20112, 'Walnut Brownie']
-                ]
+                source: series_data
             },
             grid: {containLabel: true},
-            xAxis: {name: 'amount'},
+            xAxis: {name: 'count'},
             yAxis: {type: 'category'},
             visualMap: {
                 orient: 'horizontal',
                 left: 'center',
-                min: 10,
-                max: 100,
-                text: ['High Score', 'Low Score'],
+                min: 0,
+                max: max_value,
+                text: ['High Count', 'Low Count'],
                 // Map the score column to color
                 dimension: 0,
                 inRange: {
-                    color: ['orange', 'blue']
+                    color: ['#1145f0', '#f07d11'] //blue to orange
                 }
             },
             series: [
                 {
                     type: 'bar',
                     encode: {
-                        // Map the "amount" column to X axis.
-                        x: 'amount',
-                        // Map the "product" column to Y axis
-                        y: 'product'
+                        // Map the "count" column to X axis.
+                        x: 'count',
+                        // Map the "subreddit" column to Y axis
+                        y: 'subreddit'
                     }
                 }
             ]
         };
+
+    //     this.fullSubRedditRelationChart = {
+    //     title: {
+    //         text: 'Les Miserables',
+    //         subtext: 'Default layout',
+    //         top: 'bottom',
+    //         left: 'right'
+    //     },
+    //     tooltip: {},
+    //     legend: [{
+    //         // selectedMode: 'single',
+    //         data: categories.map(function (a) {
+    //             return a.name;
+    //         })
+    //     }],
+    //     animationDuration: 1500,
+    //     animationEasingUpdate: 'quinticInOut',
+    //     series : [
+    //         {
+    //             name: 'Les Miserables',
+    //             type: 'graph',
+    //             layout: 'none',
+    //             data: graph.nodes,
+    //             links: response.data.related_graph,
+    //             categories: categories,
+    //             roam: true,
+    //             focusNodeAdjacency: true,
+    //             itemStyle: {
+    //                 borderColor: '#fff',
+    //                 borderWidth: 1,
+    //                 shadowBlur: 10,
+    //                 shadowColor: 'rgba(0, 0, 0, 0.3)'
+    //             },
+    //             label: {
+    //                 position: 'right',
+    //                 formatter: '{b}'
+    //             },
+    //             lineStyle: {
+    //                 color: 'source',
+    //                 curveness: 0.3
+    //             },
+    //             emphasis: {
+    //                 lineStyle: {
+    //                     width: 10
+    //                 }
+    //             }
+    //         }
+    //     ]
+    // };
 
         }, (error) => {
           console.log(error);
