@@ -77,7 +77,10 @@
                 <v-layout row>
                     <v-flex md6>
                     <v-chart :options="controversyChart"></v-chart> 
-                    </v-flex>                    
+                    </v-flex>      
+                    <v-flex md6>
+                    <v-chart :options="initSubRedditRelationChart"></v-chart> 
+                    </v-flex>                     
                 </v-layout> 
                                               
                 </v-container>
@@ -94,7 +97,9 @@ export default {
   data: () => ({
     popularWordsChart:  null,
     popularLinksChart: null,
-    controversyChart: null
+    controversyChart: null,
+    initSubRedditRelationChart: null,
+    fullSubRedditRelationChart: null
   }),
   methods: {
       // Will get user in user textfield and perform
@@ -289,7 +294,59 @@ export default {
                   data: series_data
               }
           ]
-      }
+        }
+
+        axios.get('http://localhost:5000/subreddit/related', {         
+          params: { name: this.subreddit, create_graph: 'True' }}, {timeout: 0})
+        .then((response) => {
+          console.log(response);
+
+          this.initSubRedditRelationChart = {
+            dataset: {
+                source: [
+                    ['score', 'amount', 'product'],
+                    [89.3, 58212, 'Matcha Latte'],
+                    [57.1, 78254, 'Milk Tea'],
+                    [74.4, 41032, 'Cheese Cocoa'],
+                    [50.1, 12755, 'Cheese Brownie'],
+                    [89.7, 20145, 'Matcha Cocoa'],
+                    [68.1, 79146, 'Tea'],
+                    [19.6, 91852, 'Orange Juice'],
+                    [10.6, 101852, 'Lemon Juice'],
+                    [32.7, 20112, 'Walnut Brownie']
+                ]
+            },
+            grid: {containLabel: true},
+            xAxis: {name: 'amount'},
+            yAxis: {type: 'category'},
+            visualMap: {
+                orient: 'horizontal',
+                left: 'center',
+                min: 10,
+                max: 100,
+                text: ['High Score', 'Low Score'],
+                // Map the score column to color
+                dimension: 0,
+                inRange: {
+                    color: ['orange', 'blue']
+                }
+            },
+            series: [
+                {
+                    type: 'bar',
+                    encode: {
+                        // Map the "amount" column to X axis.
+                        x: 'amount',
+                        // Map the "product" column to Y axis
+                        y: 'product'
+                    }
+                }
+            ]
+        };
+
+        }, (error) => {
+          console.log(error);
+        });
 
       }, (error) => {
         console.log(error);
