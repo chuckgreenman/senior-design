@@ -195,7 +195,7 @@ class Subreddit:
     # and so on, to create a graph of related subreddit activity
     def create_subreddit_graph(self):
         num_nodes = 1
-        current_subreddit = self.subreddit_name
+        current_subreddit = self.subreddit_name.lower()
         to_explore = [current_subreddit]
         explored = []
         edges = {}
@@ -211,15 +211,15 @@ class Subreddit:
                 author_top_subs = list(author_top_subs_dict.keys())[:3]
 
                 for sub in author_top_subs:
-                    if sub in subreddit_candidates:
-                        subreddit_candidates[sub] += 1
+                    if sub.lower() in subreddit_candidates:
+                        subreddit_candidates[sub.lower()] += 1
                     else:
-                        subreddit_candidates[sub] = 1
+                        subreddit_candidates[sub.lower()] = 1
 
             # Filter so frequencies of one and entries for current subreddit are removed.
             # Note that we convert subs to lowercase for comparison to avoid case issues
-            filtered_subs = [k for k, v
-                             in subreddit_candidates.items() if ((v >= 2) and (k.lower() != current_subreddit.lower()))]
+            filtered_subs = [k.lower() for k, v
+                             in subreddit_candidates.items() if ((v >= 2) and (k.lower() != current_subreddit))]
 
             # If no connected subreddits pass the threshold, either explore a new node or quit exploring
             if len(filtered_subs) == 0:
@@ -251,10 +251,10 @@ class Subreddit:
                 to_explore += filtered_subs
                 current_subreddit = to_explore[0]
 
-        if self.subreddit_name in weights:
-            weights[self.subreddit_name] += 20
+        if self.subreddit_name.lower() in weights:
+            weights[self.subreddit_name.lower()] += 20
         else:
-            weights[self.subreddit_name] = 20
+            weights[self.subreddit_name.lower()] = 20
 
         return edges, weights
 
