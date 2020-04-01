@@ -7,6 +7,6 @@ class RelatedDto:
         self.name = subreddit.subreddit_name
         self.related_subreddits = subreddit.get_related_subreddits()
         if create_graph:
-            self.related_graph = subreddit.create_subreddit_graph()
+            self.related_graph, self.graph_weights = subreddit.create_subreddit_graph()
         else:
-            self.related_graph = None
+            self.related_graph, self.graph_weights = None, None
