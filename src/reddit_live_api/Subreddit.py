@@ -173,7 +173,7 @@ class Subreddit:
 
     # Analyzes all recent authors of top posts to get any subreddits that have a strong association
     def get_related_subreddits(self):
-        top_authors = self.get_submission_authors()[:30]  # Get authors of recent popular posts
+        top_authors = self.get_submission_authors()[:20]  # Get authors of recent popular posts
         subreddit_candidates = {}
 
         for author in top_authors:
@@ -187,7 +187,7 @@ class Subreddit:
                 else:
                     subreddit_candidates[sub] = 1
 
-        filtered_subs = {k: v for k, v in subreddit_candidates.items() if ((v >= 3) and (k != self.subreddit_name))}
+        filtered_subs = {k: v for k, v in subreddit_candidates.items() if ((v >= 2) and (k != self.subreddit_name))}
 
         return filtered_subs
 
@@ -238,11 +238,10 @@ class Subreddit:
 
                 # Update weights with anything we found this round
                 for visited_sub in filtered_subs:
-                    if visited_sub.lower() != self.subreddit_name.lower():
-                        if visited_sub in weights:
-                            weights[visited_sub] = weights[visited_sub] + subreddit_candidates[visited_sub]
-                        else:
-                            weights[visited_sub] = subreddit_candidates[visited_sub]
+                    if visited_sub in weights:
+                        weights[visited_sub] = weights[visited_sub] + subreddit_candidates[visited_sub]
+                    else:
+                        weights[visited_sub] = subreddit_candidates[visited_sub]
 
                 # Update the number of nodes now that we've added edges
                 filtered_subs = [val for val in filtered_subs if val not in explored]  # alter so only includes new subs
@@ -251,7 +250,12 @@ class Subreddit:
                 explored += to_explore.pop(0)
                 to_explore += filtered_subs
                 current_subreddit = to_explore[0]
-        weights[self.subreddit_name] = max(list(weights.values())) + 5
+
+        if self.subreddit_name in weights:
+            weights[self.subreddit_name] += 20
+        else:
+            weights[self.subreddit_name] = 20
+
         return edges, weights
 
     def get_most_linked_websites(self):
