@@ -199,7 +199,8 @@ class Subreddit:
         to_explore = [current_subreddit]
         explored = []
         edges = {}
-        while num_nodes < 5:
+        weights = {}
+        while num_nodes < 10:
             subreddit = Subreddit(current_subreddit)
             top_authors = subreddit.get_submission_authors()[:20]  # Get authors of recent popular posts
             subreddit_candidates = {}
@@ -215,7 +216,10 @@ class Subreddit:
                     else:
                         subreddit_candidates[sub] = 1
 
-            filtered_subs = [k for k, v in subreddit_candidates.items() if ((v >= 2) and (k != current_subreddit))]
+            # Filter so frequencies of one and entries for current subreddit are removed.
+            # Note that we convert subs to lowercase for comparison to avoid case issues
+            filtered_subs = [k for k, v
+                             in subreddit_candidates.items() if ((v >= 2) and (k.lower() != current_subreddit.lower()))]
 
             # If no connected subreddits pass the threshold, either explore a new node or quit exploring
             if len(filtered_subs) == 0:
@@ -232,6 +236,14 @@ class Subreddit:
                 else:
                     edges[current_subreddit] = filtered_subs
 
+                # Update weights with anything we found this round
+                for visited_sub in filtered_subs:
+                    if visited_sub.lower() != self.subreddit_name.lower():
+                        if visited_sub in weights:
+                            weights[visited_sub] = weights[visited_sub] + subreddit_candidates[visited_sub]
+                        else:
+                            weights[visited_sub] = subreddit_candidates[visited_sub]
+
                 # Update the number of nodes now that we've added edges
                 filtered_subs = [val for val in filtered_subs if val not in explored]  # alter so only includes new subs
                 num_nodes += len(filtered_subs)
@@ -239,7 +251,8 @@ class Subreddit:
                 explored += to_explore.pop(0)
                 to_explore += filtered_subs
                 current_subreddit = to_explore[0]
-        return edges
+        weights[self.subreddit_name] = max(list(weights.values())) + 5
+        return edges, weights
 
     def get_most_linked_websites(self):
         links = self.get_submission_links()
