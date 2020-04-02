@@ -77,7 +77,7 @@ class DataLoader:
         created_utc_index = self.index_by_field_name("created_utc", field_list)
         page_id_index = self.index_by_field_name("link_id", field_list)
         if line[user_id_index] != "[deleted]":
-          a = (line[page_id_index], line[subreddit_id_index], line[user_id_index], 'comment', line[created_utc_index])
+          a = (line[page_id_index][-6:], line[subreddit_id_index], line[user_id_index], 'comment', line[created_utc_index])
           activity.append(a)
       else:
         subreddit_index = self.index_by_field_name("subreddit", field_list)
