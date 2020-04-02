@@ -14,8 +14,6 @@ class DbInteract:
   def add_activity_records(self, activities):
     if self.environment == 'development':
       c = self.connection.cursor()
-      for activity in activities:
-        print("Insert!")
-        c.execute("INSERT INTO activity (subreddit_id, user_id, type, occurred) VALUES (?,?,?,?);", (activity.subreddit_id, activity.user_id, activity.type, activity.occured))
+      c.executemany("INSERT INTO activity (page_id, subreddit, user, type, occurred) VALUES (?,?,?,?,?);", activities)
       self.connection.commit()
       
