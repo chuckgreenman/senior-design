@@ -94,7 +94,7 @@
 
                 <v-layout row>
                     <v-flex md12>
-                    <v-chart :options="fullSubRedditRelationChart"></v-chart> 
+                    <v-chart :options="fullSubRedditRelationChart" :autoresize="true"></v-chart> 
                     </v-flex>                                              
                 </v-layout> 
                                               
@@ -325,7 +325,7 @@ export default {
           if (response.data.related_subreddits[key] > max_value){
             max_value = response.data.related_subreddits[key];
           }
-        }
+        }        
 
         this.initSubRedditRelationChart = {
             dataset: {
@@ -358,55 +358,96 @@ export default {
                 }
             ]
         };
+        
+        // Reset data
+        series_data = [];
+        legend_data = [];
+        var temp_track = {}; // Used to subreddit name to node id
+        var node = null;        
+        for (key in response.data.graph_weights){                
+          node = {
+            id: series_data.length.toString(), // Use this to get id of node being pushed
+            name: key,
+            value: response.data.graph_weights[key],
+            symbolSize: response.data.graph_weights[key],
+            label: {
+            show: true
+            },
+            itemStyle: {
+              color: '#ffa500'
+            },          
+            category: null
+          };          
 
-    //     this.fullSubRedditRelationChart = {
-    //     title: {
-    //         text: 'Les Miserables',
-    //         subtext: 'Default layout',
-    //         top: 'bottom',
-    //         left: 'right'
-    //     },
-    //     tooltip: {},
-    //     legend: [{
-    //         // selectedMode: 'single',
-    //         data: categories.map(function (a) {
-    //             return a.name;
-    //         })
-    //     }],
-    //     animationDuration: 1500,
-    //     animationEasingUpdate: 'quinticInOut',
-    //     series : [
-    //         {
-    //             name: 'Les Miserables',
-    //             type: 'graph',
-    //             layout: 'none',
-    //             data: graph.nodes,
-    //             links: response.data.related_graph,
-    //             categories: categories,
-    //             roam: true,
-    //             focusNodeAdjacency: true,
-    //             itemStyle: {
-    //                 borderColor: '#fff',
-    //                 borderWidth: 1,
-    //                 shadowBlur: 10,
-    //                 shadowColor: 'rgba(0, 0, 0, 0.3)'
-    //             },
-    //             label: {
-    //                 position: 'right',
-    //                 formatter: '{b}'
-    //             },
-    //             lineStyle: {
-    //                 color: 'source',
-    //                 curveness: 0.3
-    //             },
-    //             emphasis: {
-    //                 lineStyle: {
-    //                     width: 10
-    //                 }
-    //             }
-    //         }
-    //     ]
-    // };
+          // Track this for later use with edges
+          temp_track[node.name] = node.id;
+
+          series_data.push(node);          
+        }
+        
+        var link = null;
+        var key2 = null;
+        // Create links in graph
+        for (key in response.data.related_graph){             
+          for (key2 = 0; key2 < response.data.related_graph[key].length; key2++){            
+            link = {
+              id: legend_data.length.toString(),
+              source: temp_track[key],
+              target: temp_track[response.data.related_graph[key][key2]]
+            };
+            legend_data.push(link);                                    
+          }          
+        }
+
+        this.fullSubRedditRelationChart = {
+        title: {
+            text: 'SubReddit Expansion',
+            subtext: 'Default layout',
+            top: 'bottom',
+            left: 'right'
+        },
+        tooltip: {},
+        // legend: [{
+        //     // selectedMode: 'single',
+        //     data: categories.map(function (a) {
+        //         return a.name;
+        //     })
+        // }],
+       animationDuration: 1500,
+        animationEasingUpdate: 'quinticInOut',
+        series : [
+            {
+                name: 'SubReddit Expansion',
+                type: 'graph',
+                layout: 'circular',
+                data: series_data,
+                links: legend_data,
+                //categories: categories,
+                roam: true,
+                draggable: true,
+                focusNodeAdjacency: true,
+                itemStyle: {
+                    borderColor: '#fff',
+                    borderWidth: 1,
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.3)'
+                },
+                label: {
+                    position: 'right',
+                    formatter: '{b}'
+                },
+                lineStyle: {
+                    color: 'source',
+                    curveness: 0.3
+                },
+                emphasis: {
+                    lineStyle: {
+                        width: 10
+                    }
+                }
+            }
+        ]
+    };
 
         }, (error) => {
           console.log(error);
@@ -419,3 +460,11 @@ export default {
   }  
 }
 </script>
+
+
+<style>
+.echarts {
+  width: 100%;
+  height: 100%;
+}
+</style>
