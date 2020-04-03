@@ -4,7 +4,7 @@
     outlined>
     <v-tabs
         fixed-tabs
-        background-color="orange"
+        background-color="rgb(255, 67, 1)"
         dark>
         <v-tab>
         User
@@ -34,10 +34,10 @@
                 </v-container>
             </v-card>
         </v-tab-item>
-        <v-tab-item>
+        <v-tab-item>          
             <v-card flat>
-                <v-container>
-                <v-layout row>
+                <v-container>                
+                <v-layout row >
                     <v-flex md10>
                     <v-text-field
                         label="SubReddit"
@@ -48,8 +48,8 @@
                     <v-flex md2>
                     <v-btn v-on:click="getSubReddit">Execute</v-btn>
                     </v-flex>
-                </v-layout>          
-
+                </v-layout>                          
+                <div class="subRedditResults" id="subRedditResult1">
                 <v-layout row>
                     <v-flex md6>
                     <h3> Most Popular Words for r/{{this.subreddit}} </h3>
@@ -88,18 +88,18 @@
 
                 <v-layout row>
                     <v-flex md12>
-                    <h3> Community Expansion from r/{{this.subreddit}} </h3> 
+                    <h3> Popular SubReddits of r/{{this.subreddit }} Expanded Based on User's Top SubReddits to Post on </h3> 
                     </v-flex>                                             
-                </v-layout> 
-
-                <v-layout row>
-                    <v-flex md12>
-                    <v-chart :options="fullSubRedditRelationChart" :autoresize="true"></v-chart> 
-                    </v-flex>                                              
-                </v-layout> 
-                                              
+                </v-layout>      
+                </div>                                                          
                 </v-container>
             </v-card>
+
+          <div class="subRedditResults">
+            <div class="extendedSubRedditChart" id="subRedditResult2">
+              <v-chart :width="auto" :options="fullSubRedditRelationChart"></v-chart> 
+            </div>
+          </div>
         </v-tab-item> 
     </v-tabs>
   </v-card>
@@ -137,6 +137,14 @@ export default {
          params: { name: this.subreddit }}, {timeout: 0})   
 
       .then((response) => {
+        var i = null;
+        // Reveals elements
+        // var revealElements = document.getElementsByClassName("subRedditResults");
+        // for(var i = 0; i < revealElements.length; i++)
+        // {
+        //     document.getElementById(revealElements.item(i)).className = "showResults";
+        // }
+       
         // Create items array
         var legend_data = Object.keys(response.data.popular_words).map(function(key) {
           return [key, response.data.popular_words[key]];
@@ -150,7 +158,7 @@ export default {
         // Create a new array with only the first 16 items taking only the keys
         legend_data = legend_data.slice(0, 16);
 
-        for(var i = 0; i < legend_data.length; i++){
+        for(i = 0; i < legend_data.length; i++){
           legend_data[i] = legend_data[i][0]; // only store the key value
         }        
         
@@ -343,7 +351,7 @@ export default {
                 // Map the score column to color
                 dimension: 0,
                 inRange: {
-                    color: ['#1145f0', '#f07d11'] //blue to orange
+                    color: ['#1145f0', 'rgb(255, 67, 1)'] //blue to orange
                 }
             },
             series: [
@@ -374,7 +382,7 @@ export default {
             show: true
             },
             itemStyle: {
-              color: '#ffa500'
+              color: 'rgb(255, 67, 1)'
             },          
             category: null
           };          
@@ -400,12 +408,12 @@ export default {
         }
 
         this.fullSubRedditRelationChart = {
-        title: {
-            text: 'SubReddit Expansion',
-            subtext: 'Default layout',
-            top: 'bottom',
-            left: 'right'
-        },
+        // title: {
+        //     text: 'Popular SubReddits of /r' + this.subreddit + " Expanded Based on User's Top SubReddits to Post on",
+        //     subtext: 'Default layout',
+        //     top: 'bottom',
+        //     left: 'right'
+        // },
         tooltip: {},
         // legend: [{
         //     // selectedMode: 'single',
@@ -466,5 +474,25 @@ export default {
 .echarts {
   width: 100%;
   height: 100%;
+}
+
+.extendedSubRedditChart{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subRedditResults{
+  display: block
+}
+
+.showResults{
+  display: block
+}
+
+.subRedditInput{
+  display:block
 }
 </style>
