@@ -11,10 +11,7 @@
         </v-tab>
         <v-tab>
         SubReddit
-        </v-tab>
-        <v-tab>
-        Submission
-        </v-tab>    
+        </v-tab>          
     
         <v-tab-item>
             <v-card flat>
@@ -56,7 +53,7 @@
                     <h3> Proportion of Controversial Posts for {{this.user}} </h3> 
                     </v-flex>     
                     <v-flex md6>
-                    <h3> SubReddits that {{this.user}} Posts on </h3> 
+                    <h3> SubReddits that {{this.user}} Comments on </h3> 
                     </v-flex>               
                 </v-layout>
 
