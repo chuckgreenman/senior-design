@@ -90,16 +90,15 @@
                     <v-flex md12>
                     <h3> Popular SubReddits of r/{{this.subreddit }} Expanded Based on User's Top SubReddits to Post on </h3> 
                     </v-flex>                                             
-                </v-layout>      
+                </v-layout>  
+
+                <div class="subRedditResults" id="extendedSubRedditChart">                  
+                    <v-chart :width="auto" :options="fullSubRedditRelationChart"></v-chart>                   
+                </div>
+
                 </div>                                                          
                 </v-container>
-            </v-card>
-
-          <div class="subRedditResults">
-            <div class="extendedSubRedditChart" id="subRedditResult2">
-              <v-chart :width="auto" :options="fullSubRedditRelationChart"></v-chart> 
-            </div>
-          </div>
+            </v-card>          
         </v-tab-item> 
     </v-tabs>
   </v-card>
@@ -132,18 +131,16 @@ export default {
        // Will get subreddit in subreddit textfield and perform
       // http get request to flask server at 127.0.0.1
       // TODO: Check for blank user name
-    getSubReddit: function () {              
+    getSubReddit: function () {                    
       axios.get('http://localhost:5000/subreddit', {         
          params: { name: this.subreddit }}, {timeout: 0})   
-
-      .then((response) => {
-        var i = null;
+      .then((response) => {                 
         // Reveals elements
-        // var revealElements = document.getElementsByClassName("subRedditResults");
-        // for(var i = 0; i < revealElements.length; i++)
-        // {
-        //     document.getElementById(revealElements.item(i)).className = "showResults";
-        // }
+        var revealElements = document.getElementsByClassName("subRedditResults");
+        for(var i = 0; i < revealElements.length; i++)
+        {            
+            revealElements.item(i).className = "showResults";
+        }
        
         // Create items array
         var legend_data = Object.keys(response.data.popular_words).map(function(key) {
@@ -476,7 +473,7 @@ export default {
   height: 100%;
 }
 
-.extendedSubRedditChart{
+#extendedSubRedditChart{
   height: 100%;
   width: 100%;
   display: flex;
@@ -485,7 +482,7 @@ export default {
 }
 
 .subRedditResults{
-  display: block
+  display: none
 }
 
 .showResults{
