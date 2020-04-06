@@ -52,12 +52,20 @@ def crawlusermeta():
     
   print("User metadata refreshed")
 
+@click.command()
+@click.argument('user_id')
+def activitypercentile(user_id):
+  db = DbInteract()
+  act_percentile = db.calculate_activity_percentile(user_id)
+  print("User is in the", act_percentile, "percentile of active users.")
+
 cli.add_command(dbsetup)
 cli.add_command(importbaseline)
 cli.add_command(crawl)
 cli.add_command(refreshactiongraph)
 cli.add_command(refreshrelationshipgraph)
 cli.add_command(crawlusermeta)
+cli.add_command(activitypercentile)
 
 if __name__ == "__main__":
   cli()

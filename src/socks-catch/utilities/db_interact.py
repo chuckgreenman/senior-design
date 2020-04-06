@@ -104,7 +104,6 @@ class DbInteract:
 
   def user_metadata_exists(self, user_name):
     if self.environment == 'development':
-      print(user_name)
       c = self.connection.cursor()
       result = c.execute("SELECT count(*) FROM user WHERE user = ?;", user_name)
       values = result.fetchone()
@@ -112,3 +111,19 @@ class DbInteract:
       if count >= 1:
         return True
       return False
+
+  def calculate_activity_percentile(self, user_id):
+    if self.environment == 'development':
+      c = self.connection.cursor()
+      total_users = c.execute("SELECT count(DISTINCT user) FROM activity").fetchone()[0]
+      users_actions = c.execute("SELECT count(*) FROM activity WHERE user = ?", (user_id,)).fetchone()[0]
+      users_with_more_actions_query = """
+        SELECT count(u.user_act_count) FROM
+          (SELECT count(*) as user_act_count FROM activity GROUP BY user) u
+        WHERE
+          u.user_act_count > ?
+      """
+
+      users_with_more_actions = c.execute(users_with_more_actions_query, (users_actions,)).fetchone()[0]
+
+      return 1-(users_with_more_actions/total_users)        
