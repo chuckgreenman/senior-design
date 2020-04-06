@@ -1,7 +1,9 @@
 import click
 from utilities.db_setup import DbSetup
 from algorithm.action_graph import ActionGraph
+from algorithm.relationship_graph import RelationshipGraph
 from utilities.dataloader import DataLoader
+from utilities.db_interact import DbInteract
 from models.user import User
 
 @click.group()
@@ -30,9 +32,32 @@ def crawl(user_id):
   u = User(user_id)
   u.crawl()
 
+@click.command()
+def refreshactiongraph():
+  ActionGraph.refresh()
+  print("Action Graph refreshed.")
+
+@click.command()
+def refreshrelationshipgraph():
+  RelationshipGraph.refresh()
+  print("Relationship Graph refreshed")
+
+@click.command()
+def crawlusermeta():
+  db = DbInteract()
+  unique_users = db.get_unique_users()
+  for row in unique_users:
+    u = User(row[0])
+    u.pull_metadata()
+    
+  print("User metadata refreshed")
+
 cli.add_command(dbsetup)
 cli.add_command(importbaseline)
 cli.add_command(crawl)
+cli.add_command(refreshactiongraph)
+cli.add_command(refreshrelationshipgraph)
+cli.add_command(crawlusermeta)
 
 if __name__ == "__main__":
   cli()

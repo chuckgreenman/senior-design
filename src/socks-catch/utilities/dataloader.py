@@ -83,7 +83,7 @@ class DataLoader:
         subreddit_index = self.index_by_field_name("subreddit", field_list)
         user_id_index = self.index_by_field_name("author", field_list)
         created_utc_index = self.index_by_field_name("created_utc", field_list)
-        page_id_index = self.index_by_field_name("link_id", field_list)
+        page_id_index = self.index_by_field_name("id", field_list)
         if line[user_id_index] != "[deleted]":
           a = (line[page_id_index], line[subreddit_index], line[user_id_index], 'link', line[created_utc_index])
           activity.append(a)

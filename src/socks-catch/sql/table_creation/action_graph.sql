@@ -1,6 +1,6 @@
-CREATE TABLE user_page_interaction_weight (
+CREATE TABLE action_graph (
   page_id VARCHAR(50),
-  activity_id INTEGER,
+  user VARCHAR(50),
   num_interactions INTEGER,
   weight DATETIME
 );
