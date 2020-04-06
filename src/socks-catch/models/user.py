@@ -29,6 +29,7 @@ class User():
     db = DbInteract()
     r = Reddit()
     try:
+      print(self.id)
       if db.user_metadata_exists((self.id,)):
         return
 
@@ -54,6 +55,6 @@ class User():
       if comment_count == 1000 or submission_count == 1000:
         max_activity = True
 
-      db.save_user_metadata((self.id, max_activity, registrationTime, oldest))
-    except:
-      pass
+      db.save_user_metadata((self.id, max_activity, registrationTime, oldest, oldest-registrationTime))
+      print("Saved")
+    except Exception as e: print(e)

@@ -1,6 +1,7 @@
 import os
 import sqlite3
 import math
+import time
 
 class DbInteract:
   def __init__(self, environment='development'):
@@ -17,6 +18,7 @@ class DbInteract:
       c = self.connection.cursor()
       c.executemany("INSERT INTO activity (page_id, subreddit, user, type, occurred) VALUES (?,?,?,?,?);", activities)
       self.connection.commit()
+      c.close()
 
   def refresh_action_graph(self):
     if self.environment == 'development':
@@ -26,6 +28,7 @@ class DbInteract:
       c2 = self.connection.cursor()
       c2.executemany("INSERT INTO action_graph (page_id, user, num_interactions, weight) VALUES (?,?,?,?);", weights)
       self.connection.commit()
+      c.close()
 
   def refresh_relationship_graph(self):
     if self.environment == 'development':
@@ -89,18 +92,27 @@ class DbInteract:
 
       c.executemany("INSERT INTO relationship_graph (distance, weight, user_i, user_j) VALUES (?,?,?,?);", complete_tuple)
       self.connection.commit()
+      c.close()
 
   def get_unique_users(self):
     if self.environment == 'development':
       c = self.connection.cursor()
       unique_users = c.execute("SELECT DISTINCT user FROM activity;")
-      return unique_users
+      unique_users_list = []
+      for u in unique_users:
+        unique_users_list.append(u[0])
+      self.connection.commit()
+      c.close()
+      return unique_users_list
 
   def save_user_metadata(self, user):
     if self.environment == 'development':
       c = self.connection.cursor()
-      c.execute("INSERT INTO user (user, max_activity, registrationTime, firstActionTime) VALUES (?,?,?,?);", user)
+      c.execute("INSERT INTO user (user, max_activity, registrationTime, firstActionTime, delay) VALUES (?,?,?,?,?);", user)
+      print(user)
+      time.sleep(1)
       self.connection.commit()
+      c.close()
 
   def user_metadata_exists(self, user_name):
     if self.environment == 'development':
@@ -108,6 +120,7 @@ class DbInteract:
       result = c.execute("SELECT count(*) FROM user WHERE user = ?;", user_name)
       values = result.fetchone()
       count = values[0]
+      c.close()
       if count >= 1:
         return True
       return False
@@ -125,5 +138,27 @@ class DbInteract:
       """
 
       users_with_more_actions = c.execute(users_with_more_actions_query, (users_actions,)).fetchone()[0]
+      c.close()
 
-      return 1-(users_with_more_actions/total_users)        
+      return 1-(users_with_more_actions/total_users)
+
+  def calculate_delay_percentile(self, user_id):
+    if self.environment == "development":
+      c = self.connection.cursor()
+      total_users = c.execute("SELECT count(DISTINCT user) FROM activity").fetchone()[0]
+      users_delay = c.execute("SELECT delay FROM user WHERE user = ?", (user_id,)).fetchone()[0]
+      users_with_longer_delay = c.execute("SELECT count(*) FROM user WHERE delay > ?", (users_delay,)).fetchone()[0]
+
+      return 1-(users_with_longer_delay/total_users)
+
+  def closest_users_by_relationship_weight(self, user_id):
+    if self.environment == "development":
+      c = self.connection.cursor()
+      closest_users = c.execute("SELECT user_j, weight FROM relationship_graph WHERE user_i = ? ORDER BY weight DESC LIMIT 10", (user_id,))
+
+      closest_users_list = []
+      for u in closest_users:
+        closest_users_list.append((u[0], u[1],))
+
+      return closest_users_list
+

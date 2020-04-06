@@ -2,6 +2,7 @@ import click
 from utilities.db_setup import DbSetup
 from algorithm.action_graph import ActionGraph
 from algorithm.relationship_graph import RelationshipGraph
+from utilities.evaluation import Evaluation
 from utilities.dataloader import DataLoader
 from utilities.db_interact import DbInteract
 from models.user import User
@@ -46,8 +47,9 @@ def refreshrelationshipgraph():
 def crawlusermeta():
   db = DbInteract()
   unique_users = db.get_unique_users()
+  print(unique_users)
   for row in unique_users:
-    u = User(row[0])
+    u = User(row)
     u.pull_metadata()
     
   print("User metadata refreshed")
@@ -57,7 +59,24 @@ def crawlusermeta():
 def activitypercentile(user_id):
   db = DbInteract()
   act_percentile = db.calculate_activity_percentile(user_id)
-  print("User is in the", act_percentile, "percentile of active users.")
+  print("User is in the", act_percentile, "percentile of user activity.")
+
+@click.command()
+@click.argument('user_id')
+def delaypercentile(user_id):
+  db = DbInteract()
+  delaypercentile = db.calculate_delay_percentile(user_id)
+  print("User is in the", delaypercentile, "percentile of user delays.")
+
+@click.command()
+@click.argument('user_id')
+def evaluateuser(user_id):
+  e = Evaluation(user_id)
+  print("User Id:", e.user_id)
+  print("Delay Percentile:", e.delay_percentile)
+  print("Action Count Percentile:", e.action_count_percentile)
+  print(e.closest_users_by_relationship_weight)
+
 
 cli.add_command(dbsetup)
 cli.add_command(importbaseline)
@@ -66,6 +85,7 @@ cli.add_command(refreshactiongraph)
 cli.add_command(refreshrelationshipgraph)
 cli.add_command(crawlusermeta)
 cli.add_command(activitypercentile)
+cli.add_command(evaluateuser)
 
 if __name__ == "__main__":
   cli()
