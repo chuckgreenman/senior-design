@@ -65,6 +65,17 @@
                     <v-chart :options="initSubRedditRelationChart"></v-chart> 
                     </v-flex>                     
                 </v-layout> 
+
+                <v-layout row>
+                    <v-flex md12>
+                    <h3> {{this.user}}'s Karma </h3> 
+                    </v-flex>                                             
+                </v-layout>  
+
+                <div id="extendedChart"> 
+                  <v-chart :width="auto" :options="karmaChart"></v-chart>                   
+                </div>
+
                 </div>    
 
                 </v-container>
@@ -128,7 +139,7 @@
                     </v-flex>                                             
                 </v-layout>  
 
-                <div class="subRedditResults" id="extendedSubRedditChart">                  
+                <div class="subRedditResults" id="extendedChart">                  
                     <v-chart :width="auto" :options="fullSubRedditRelationChart"></v-chart>                   
                 </div>
 
@@ -148,6 +159,7 @@ export default {
     popularWordsChart:  null,
     popularLinksChart: null,
     controversyChart: null,
+    karmaChart : null,
     initSubRedditRelationChart: null,
     fullSubRedditRelationChart: null
   }),
@@ -319,7 +331,47 @@ export default {
           },
           series: [
               {
-                  name: 'Proportion of Controversial Posts on\n r/' + this.subreddit,
+                  name: 'Proportion of Controversial Posts from ' + this.user,
+                  type: 'pie',
+                  radius: ['50%', '70%'],
+                  avoidLabelOverlap: false,
+                  label: {
+                      show: false,
+                      position: 'center'
+                  },
+                  emphasis: {
+                      label: {
+                          show: true,
+                          fontSize: '30',
+                          fontWeight: 'bold'
+                      }
+                  },
+                  labelLine: {
+                      show: false
+                  },
+                  data: series_data
+              }
+          ]
+        }
+
+        legend_data = ['Comment Karma', 'Link Karma'];
+        series_data = [{name: legend_data[0], value: response.data.comment_karma}, 
+        {name: legend_data[1], value: response.data.link_karma}];
+
+        // Build data for popular links chart
+        this.karmaChart = {          
+          tooltip: {
+              trigger: 'item',
+              formatter: '{a} <br/>{b}: {c} ({d}%)'
+          },
+          legend: {
+              orient: 'vertical',
+              left: 10,              
+              data: legend_data
+          },
+          series: [
+              {
+                  name: this.user + ' Karma Breakdown',
                   type: 'pie',
                   radius: ['50%', '70%'],
                   avoidLabelOverlap: false,
@@ -733,7 +785,7 @@ export default {
   height: 100%;
 }
 
-#extendedSubRedditChart{
+#extendedChart{
   height: 100%;
   width: 100%;
   display: flex;
