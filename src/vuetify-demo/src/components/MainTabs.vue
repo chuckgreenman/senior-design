@@ -438,6 +438,7 @@ export default {
         };
       }, (error) => {
         console.log(error);
+        alert(error + ". User likely does not exist");
       });                
     },
        // Will get subreddit in subreddit textfield and perform
@@ -768,10 +769,12 @@ export default {
 
         }, (error) => {
           console.log(error);
+          alert(error);
         });
 
       }, (error) => {
         console.log(error);
+        alert(error + ". Subreddit likely does not exist or is quarantined.");
       });                 
     }
   }  
