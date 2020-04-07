@@ -1,12 +1,13 @@
-import os
 import sqlite3
 import math
 import time
+from os.path import dirname, abspath, join
 
 class DbInteract:
   def __init__(self, environment='development'):
     if environment == 'development':
-      self.connection = sqlite3.connect(os.path.join("development.db"))
+      d = dirname(dirname(abspath(__file__)))
+      self.connection = sqlite3.connect(join(d, "development.db"))
       self.environment = environment
     else:
       raise Exception("Unrecognized enviroment variable.")

@@ -1,6 +1,6 @@
 # A class that takes a Submission object and converts it to a data transfer object (DTO) that only contains the desired
 # information for an HTTP request
-from reddit_live_api.Utils import scrub_text
+from ..Utils import scrub_text
 
 
 class SubmissionDto:

@@ -1,10 +1,12 @@
+from urllib.parse import urlparse
+
 import praw
 import prawcore.exceptions
-from reddit_live_api.keys import getID, getSecret, getAgent
 from bs4 import BeautifulSoup
-from reddit_live_api.Utils import scrub_text, SubmissionType, TimeFrame, remove_stopwords, rank_items, ignore_website
-from reddit_live_api.User import User
-from urllib.parse import urlparse
+
+from ..keys import getID, getSecret, getAgent
+from .User import User
+from .Utils import scrub_text, SubmissionType, TimeFrame, remove_stopwords, rank_items, ignore_website
 
 
 class Subreddit:
@@ -182,12 +184,13 @@ class Subreddit:
             author_top_subs = list(author_top_subs_dict.keys())[:3]
 
             for sub in author_top_subs:
+                sub = sub.lower()
                 if sub in subreddit_candidates:
                     subreddit_candidates[sub] += 1
                 else:
                     subreddit_candidates[sub] = 1
 
-        filtered_subs = {k: v for k, v in subreddit_candidates.items() if ((v >= 2) and (k != self.subreddit_name))}
+        filtered_subs = {k: v for k, v in subreddit_candidates.items() if ((v >= 2) and (k != self.subreddit_name.lower()))}
 
         return filtered_subs
 
