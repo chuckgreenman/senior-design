@@ -516,11 +516,13 @@ export default {
         
         var series_data = [];
         // Fill series_data in expected format
-        for (var key in legend_data){
-          series_data.push({value: response.data.popular_words[key], name: key});
+        for (i = 0; i < legend_data.length; i++){
+          series_data.push({value: response.data.popular_words[legend_data[i]], name: legend_data[i]});
         }
-        // Build data for popular words chart
-        this.popularWordsChart = {      
+
+        if(series_data.length > 0){
+          // Build data for popular words chart
+          this.popularWordsChart = {      
             tooltip: {
                 trigger: 'item',
                 formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -553,7 +555,11 @@ export default {
                     data: series_data
                 }
             ]
+          }
         }
+        else{
+          this.popularWordsChart = this.noDataAvailable;
+        }        
 
         // Create items array
         legend_data = Object.keys(response.data.most_linked_websites).map(function(key) {
@@ -573,47 +579,53 @@ export default {
         }
 
         series_data = [];
-        // Fill series_data in expected format
-        for (key in response.data.most_linked_websites){
-          if (response.data.most_linked_websites[key] > 1){
-            series_data.push({value: response.data.most_linked_websites[key], name: key});
-          }          
+        // Fill series_data in expected format        
+        for (i = 0; i < legend_data.length; i++){
+          if (response.data.most_linked_websites[legend_data[i]] > 1){
+            series_data.push({value: response.data.most_linked_websites[legend_data[i]], name: legend_data[i]});
+          }  
         }
-        // Build data for popular links chart
-        this.popularLinksChart = {          
-          tooltip: {
-              trigger: 'item',
-              formatter: '{a} <br/>{b}: {c} ({d}%)'
-          },
-          legend: {
-              orient: 'vertical',
-              left: 10,              
-              data: legend_data
-          },
-          series: [
-              {
-                  name: 'Most Linked to Websites from\n r/' + this.subreddit,
-                  type: 'pie',
-                  radius: ['50%', '70%'],
-                  avoidLabelOverlap: false,
-                  label: {
-                      show: false,
-                      position: 'center'
-                  },
-                  emphasis: {
-                      label: {
-                          show: true,
-                          fontSize: '30',
-                          fontWeight: 'bold'
-                      }
-                  },
-                  labelLine: {
-                      show: false
-                  },
-                  data: series_data
-              }
-          ]
-      }
+
+        if(series_data.length > 0){
+          // Build data for popular links chart
+          this.popularLinksChart = {          
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 10,              
+                data: legend_data
+            },
+            series: [
+                {
+                    name: 'Most Linked to Websites from\n r/' + this.subreddit,
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '30',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: series_data
+                }
+            ]
+         }
+        }
+        else{
+          this.popularLinksChart = this.noDataAvailable;
+        }            
 
       // Create items array
         legend_data = Object.keys(response.data.proportion_controversial_posts).map(function(key) {
@@ -634,11 +646,13 @@ export default {
 
         series_data = [];
         // Fill series_data in expected format
-        for (key in response.data.proportion_controversial_posts){
-          series_data.push({value: response.data.proportion_controversial_posts[key], name: key});
+        for (i = 0; i < legend_data.length; i++){
+          series_data.push({value: response.data.proportion_controversial_posts[legend_data[i]], name: legend_data[i]});
         }
-        // Build data for popular links chart
-        this.controversyChart = {          
+
+        if(series_data.length > 0){
+          // Build data for popular links chart
+          this.controversyChart = {          
           tooltip: {
               trigger: 'item',
               formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -671,7 +685,11 @@ export default {
                   data: series_data
               }
           ]
+          }
         }
+        else{
+          this.controversyChart = this.noDataAvailable;
+        }         
 
         axios.get('http://localhost:5000/subreddit/related', {         
           params: { name: this.subreddit, create_graph: 'True' }}, {timeout: 0})
@@ -685,9 +703,10 @@ export default {
           if (response.data.related_subreddits[key] > max_value){
             max_value = response.data.related_subreddits[key];
           }
-        }        
-
-        this.initSubRedditRelationChart = {
+        }   
+        
+         if(series_data.length > 1){
+          this.initSubRedditRelationChart = {
             dataset: {
                 source: series_data
             },
@@ -717,7 +736,11 @@ export default {
                     }
                 }
             ]
-        };
+         };
+        }
+        else{
+          this.initSubRedditRelationChart = this.noDataAvailable;
+        }            
         
         // Reset data
         series_data = [];
@@ -746,6 +769,7 @@ export default {
         }
         
         var link = null;
+        var key = null;
         var key2 = null;
         // Create links in graph
         for (key in response.data.related_graph){             
@@ -759,56 +783,49 @@ export default {
           }          
         }
 
-        this.fullSubRedditRelationChart = {
-        // title: {
-        //     text: 'Popular SubReddits of /r' + this.subreddit + " Expanded Based on User's Top SubReddits to Post on",
-        //     subtext: 'Default layout',
-        //     top: 'bottom',
-        //     left: 'right'
-        // },
-        tooltip: {},
-        // legend: [{
-        //     // selectedMode: 'single',
-        //     data: categories.map(function (a) {
-        //         return a.name;
-        //     })
-        // }],
-       animationDuration: 1500,
-        animationEasingUpdate: 'quinticInOut',
-        series : [
-            {
-                name: 'SubReddit Expansion',
-                type: 'graph',
-                layout: 'circular',
-                data: series_data,
-                links: legend_data,
-                //categories: categories,
-                roam: true,
-                draggable: true,
-                focusNodeAdjacency: true,
-                itemStyle: {
-                    borderColor: '#fff',
-                    borderWidth: 1,
-                    shadowBlur: 10,
-                    shadowColor: 'rgba(0, 0, 0, 0.3)'
-                },
-                label: {
-                    position: 'right',
-                    formatter: '{b}'
-                },
-                lineStyle: {
-                    color: 'source',
-                    curveness: 0.3
-                },
-                emphasis: {
-                    lineStyle: {
-                        width: 10
-                    }
-                }
-            }
-        ]
-    };
-
+         if(series_data.length > 0){
+            this.fullSubRedditRelationChart = {        
+            tooltip: {},        
+            animationDuration: 1500,
+              animationEasingUpdate: 'quinticInOut',
+              series : [
+                  {
+                      name: 'SubReddit Expansion',
+                      type: 'graph',
+                      layout: 'circular',
+                      data: series_data,
+                      links: legend_data,
+                      //categories: categories,
+                      roam: true,
+                      draggable: true,
+                      focusNodeAdjacency: true,
+                      itemStyle: {
+                          borderColor: '#fff',
+                          borderWidth: 1,
+                          shadowBlur: 10,
+                          shadowColor: 'rgba(0, 0, 0, 0.3)'
+                      },
+                      label: {
+                          position: 'right',
+                          formatter: '{b}'
+                      },
+                      lineStyle: {
+                          color: 'source',
+                          curveness: 0.3
+                      },
+                      emphasis: {
+                          lineStyle: {
+                              width: 10
+                          }
+                      }
+                  }
+              ]
+          };
+        }
+        else{
+          this.fullSubRedditRelationChart = this.noDataAvailable;
+        } 
+                
         }, (error) => {
           console.log(error);
           alert(error);
