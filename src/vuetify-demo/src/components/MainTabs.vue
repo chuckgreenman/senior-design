@@ -161,7 +161,26 @@ export default {
     controversyChart: null,
     karmaChart : null,
     initSubRedditRelationChart: null,
-    fullSubRedditRelationChart: null
+    fullSubRedditRelationChart: null,
+    noDataAvailable: {
+      title: {
+          show: true,
+          textStyle:{
+            color:'grey',
+            fontSize:20
+          },
+          text: 'No Data is Available',
+          left: 'center',
+          top: 'center'
+        },
+      xAxis: {
+          show: false
+      },
+      yAxis: {
+          show: false
+      },
+      series: []
+    }
   }),
   methods: {
       // Will get user in user textfield and perform
@@ -197,11 +216,13 @@ export default {
         
         var series_data = [];
         // Fill series_data in expected format
-        for (var key in response.data.popular_words){
-          series_data.push({value: response.data.popular_words[key], name: key});
+        for (i = 0; i < legend_data.length; i++){
+          series_data.push({value: response.data.popular_words[legend_data[i]], name: legend_data[i]});
         }
-        // Build data for popular words chart
-        this.popularWordsChart = {      
+
+        if(series_data.length > 0){
+          // Build data for popular words chart
+          this.popularWordsChart = {      
             tooltip: {
                 trigger: 'item',
                 formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -213,7 +234,7 @@ export default {
             },
             series: [
                 {
-                    name: 'Most Popular Words from\n r/' + this.subreddit,
+                    name: 'Most Popular Words from ' + this.user,
                     type: 'pie',
                     radius: ['50%', '70%'],
                     avoidLabelOverlap: false,
@@ -234,8 +255,12 @@ export default {
                     data: series_data
                 }
             ]
+          }
         }
-
+        else{
+          this.popularWordsChart = this.noDataAvailable;
+        }
+        
         // Create items array
         legend_data = Object.keys(response.data.most_linked_websites).map(function(key) {
           return [key, response.data.most_linked_websites[key]];
@@ -255,13 +280,15 @@ export default {
 
         series_data = [];
         // Fill series_data in expected format
-        for (key in response.data.most_linked_websites){
-          if (response.data.most_linked_websites[key] > 1){
-            series_data.push({value: response.data.most_linked_websites[key], name: key});
-          }          
+        for (i = 0; i < legend_data.length; i++){
+          if (response.data.most_linked_websites[legend_data[i]] > 1){
+            series_data.push({value: response.data.most_linked_websites[legend_data[i]], name: legend_data[i]});
+          }  
         }
-        // Build data for popular links chart
-        this.popularLinksChart = {          
+        
+        if(series_data.length > 0){
+          // Build data for popular links chart
+          this.popularLinksChart = {          
           tooltip: {
               trigger: 'item',
               formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -273,7 +300,7 @@ export default {
           },
           series: [
               {
-                  name: 'Most Linked to Websites from\n r/' + this.subreddit,
+                  name: 'Most Linked to Websites from ' + this.user,
                   type: 'pie',
                   radius: ['50%', '70%'],
                   avoidLabelOverlap: false,
@@ -294,7 +321,11 @@ export default {
                   data: series_data
               }
           ]
-      }
+          }
+        }
+        else{
+          this.popularLinksChart = this.noDataAvailable;
+        }        
 
       // Create items array
         legend_data = Object.keys(response.data.proportion_controversial_posts).map(function(key) {
@@ -318,8 +349,10 @@ export default {
         for (key in response.data.proportion_controversial_posts){
           series_data.push({value: response.data.proportion_controversial_posts[key], name: key});
         }
-        // Build data for popular links chart
-        this.controversyChart = {          
+
+        if(series_data.length > 0){
+          // Build data for popular links chart
+          this.controversyChart = {          
           tooltip: {
               trigger: 'item',
               formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -353,6 +386,10 @@ export default {
               }
           ]
         }
+        }
+        else{
+          this.controversyChart = this.noDataAvailable;
+        }        
 
         legend_data = ['Comment Karma', 'Link Karma'];
         series_data = [{name: legend_data[0], value: response.data.comment_karma}, 
@@ -398,44 +435,49 @@ export default {
 
         var max_value = 0; // Used for visual map in initSubRedditRelationChart
         // Fill series_data in expected format
-        for (key in response.data.top_subreddits){
+        for (var key in response.data.top_subreddits){
           series_data.push([response.data.top_subreddits[key], key]);
           if (response.data.top_subreddits[key] > max_value){
             max_value = response.data.top_subreddits[key];
           }
         }        
 
-        this.initSubRedditRelationChart = {
-            dataset: {
-                source: series_data
-            },
-            grid: {containLabel: true},
-            xAxis: {name: 'count'},
-            yAxis: {type: 'category'},
-            visualMap: {
-                orient: 'horizontal',
-                left: 'center',
-                min: 0,
-                max: max_value,
-                text: ['High Count', 'Low Count'],
-                // Map the score column to color
-                dimension: 0,
-                inRange: {
-                    color: ['#1145f0', 'rgb(255, 67, 1)'] //blue to orange
-                }
-            },
-            series: [
-                {
-                    type: 'bar',
-                    encode: {
-                        // Map the "count" column to X axis.
-                        x: 'count',
-                        // Map the "subreddit" column to Y axis
-                        y: 'subreddit'
-                    }
-                }
-            ]
-        };
+        if(series_data.length > 1){
+          this.initSubRedditRelationChart = {
+              dataset: {
+                  source: series_data
+              },
+              grid: {containLabel: true},
+              xAxis: {name: 'count'},
+              yAxis: {type: 'category'},
+              visualMap: {
+                  orient: 'horizontal',
+                  left: 'center',
+                  min: 0,
+                  max: max_value,
+                  text: ['High Count', 'Low Count'],
+                  // Map the score column to color
+                  dimension: 0,
+                  inRange: {
+                      color: ['#1145f0', 'rgb(255, 67, 1)'] //blue to orange
+                  }
+              },
+              series: [
+                  {
+                      type: 'bar',
+                      encode: {
+                          // Map the "count" column to X axis.
+                          x: 'count',
+                          // Map the "subreddit" column to Y axis
+                          y: 'subreddit'
+                      }
+                  }
+              ]
+          };
+        }
+        else{
+          this.initSubRedditRelationChart = this.noDataAvailable;
+        } 
       }, (error) => {
         console.log(error);
         alert(error + ". User likely does not exist");
@@ -474,7 +516,7 @@ export default {
         
         var series_data = [];
         // Fill series_data in expected format
-        for (var key in response.data.popular_words){
+        for (var key in legend_data){
           series_data.push({value: response.data.popular_words[key], name: key});
         }
         // Build data for popular words chart
