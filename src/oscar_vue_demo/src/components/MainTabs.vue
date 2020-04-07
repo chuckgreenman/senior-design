@@ -184,8 +184,7 @@ export default {
   }),
   methods: {
       // Will get user in user textfield and perform
-      // http get request to flask server at 127.0.0.1
-      // TODO: Check for blank user name
+      // http get request to flask server at 127.0.0.1      
     getUser: function () {                  
       axios.get('http://localhost:5000/user', {         
          params: { name: this.user }}, {timeout: 0})
@@ -484,8 +483,7 @@ export default {
       });                
     },
        // Will get subreddit in subreddit textfield and perform
-      // http get request to flask server at 127.0.0.1
-      // TODO: Check for blank user name
+      // http get request to flask server at 127.0.0.1      
     getSubReddit: function () {                    
       axios.get('http://localhost:5000/subreddit', {         
          params: { name: this.subreddit }}, {timeout: 0})   
@@ -825,7 +823,7 @@ export default {
         else{
           this.fullSubRedditRelationChart = this.noDataAvailable;
         } 
-                
+
         }, (error) => {
           console.log(error);
           alert(error);
