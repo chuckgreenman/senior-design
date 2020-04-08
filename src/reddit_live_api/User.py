@@ -72,7 +72,11 @@ class User:
         return {'controversial': count, 'non-controversial': (len(votes)-count)}
 
     def get_evaluation(self):
-        return json.dumps(Evaluation(self.username).__dict__)
+        try:
+            val = Evaluation(self.username).__dict__
+        except TypeError:
+            return None
+        return val
 
     ''' Comments
     This section allows us to obtain information about comments the user has left
