@@ -1,18 +1,15 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <v-img class="resize" src="../assets/oscar_logo.png" height="200"
+              contain></v-img>
+    
+    <h1>Welcome to Open Social Comparison and Analysis for Reddit!</h1>    
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  name: 'OscarHeader'  
 }
 </script>
 

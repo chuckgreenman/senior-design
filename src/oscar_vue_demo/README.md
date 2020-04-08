@@ -1,4 +1,4 @@
-# oscar-vue
+# vuetify-demo
 
 ## Project setup
 ```

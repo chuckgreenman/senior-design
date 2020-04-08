@@ -7,3 +7,4 @@ networkx==2.4
 pygraphviz==1.5
 flask==1.1.1
 wordcloud==1.6.0
+Flask-Cors==3.0.8
