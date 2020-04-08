@@ -1,8 +1,9 @@
 <template>
   <div>
-    <v-img src="../assets/oscar_logo.png"></v-img>
+    <v-img class="resize" src="../assets/oscar_logo.png" height="200"
+              contain></v-img>
     
-    <h1>Welcome to OSCAR!</h1>    
+    <h1>Welcome to Open Social Comparison and Analysis for Reddit!</h1>    
   </div>
 </template>
 
