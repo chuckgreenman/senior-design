@@ -1,6 +1,6 @@
 from flask import Flask
 import os
-from reddit_live_api.flaskr import subreddit, user
+from ..flaskr import subreddit, user
 from flask_cors import CORS
 
 

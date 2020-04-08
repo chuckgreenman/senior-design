@@ -1,8 +1,12 @@
+import json
+from urllib.parse import urlparse
+
 import praw
 import prawcore.exceptions
-from reddit_live_api.keys import getID, getSecret, getAgent
-from reddit_live_api.Utils import scrub_text, rank_items, remove_stopwords, ignore_website
-from urllib.parse import urlparse
+
+from ..keys import getID, getSecret, getAgent
+from .Utils import scrub_text, rank_items, remove_stopwords, ignore_website
+from ..socks_catch.utilities.evaluation import Evaluation
 
 
 class User:
@@ -66,6 +70,9 @@ class User:
         votes = self.get_submission_upvote_ratios()
         count = sum(map(lambda x: (x <= 0.75) is True, votes))
         return {'controversial': count, 'non-controversial': (len(votes)-count)}
+
+    def get_evaluation(self):
+        return json.dumps(Evaluation(self.username).__dict__)
 
     ''' Comments
     This section allows us to obtain information about comments the user has left
