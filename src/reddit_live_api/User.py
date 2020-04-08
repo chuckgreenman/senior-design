@@ -73,7 +73,7 @@ class User:
 
     def get_evaluation(self):
         try:
-            val = json.dumps(Evaluation(self.username).__dict__)
+            val = Evaluation(self.username).__dict__
         except TypeError:
             return None
         return val
