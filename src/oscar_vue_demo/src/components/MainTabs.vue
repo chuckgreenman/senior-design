@@ -53,7 +53,7 @@
                     <h3> Proportion of Controversial Posts for {{this.user}} </h3> 
                     </v-flex>     
                     <v-flex md6>
-                    <h3> SubReddits that {{this.user}} Comments on </h3> 
+                    <h3> SubReddits that {{this.user}} Participates in </h3> 
                     </v-flex>               
                 </v-layout>
 
