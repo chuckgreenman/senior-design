@@ -264,7 +264,8 @@ class Subreddit:
     def get_most_linked_websites(self):
         links = self.get_submission_links()
         scrubbed_links = [urlparse(link).netloc for link in links]
-        scrubbed_links = [link.replace('www.', '') for link in scrubbed_links if not any(x in link for x in ignore_website)]
+        scrubbed_links = [link.replace('www.', '') for link in scrubbed_links if
+                          not any(x in link for x in ignore_website) and link != '']
 
         rank_dict = rank_items(scrubbed_links, True)
 
