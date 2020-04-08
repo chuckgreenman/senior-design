@@ -1,8 +1,8 @@
 from flask import Blueprint, request
-from reddit_live_api.User import User
-from reddit_live_api.dtos.user_dto import UserDto
-from reddit_live_api.dtos.submission_dto import SubmissionDto
-from reddit_live_api.dtos.comment_dto import CommentDto
+from ..User import User
+from ..dtos.user_dto import UserDto
+from ..dtos.submission_dto import SubmissionDto
+from ..dtos.comment_dto import CommentDto
 import json
 
 bp = Blueprint("user", __name__, url_prefix="/user")

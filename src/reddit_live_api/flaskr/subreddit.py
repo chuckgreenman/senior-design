@@ -1,10 +1,10 @@
 from flask import Blueprint, request
-from reddit_live_api.Subreddit import Subreddit
-from reddit_live_api.dtos.subreddit_dto import SubredditDto
-from reddit_live_api.dtos.submission_dto import SubmissionDto
-from reddit_live_api.dtos.comment_dto import CommentDto
-from reddit_live_api.dtos.related_dto import RelatedDto
-from reddit_live_api.Utils import SubmissionType, TimeFrame
+from ..Subreddit import Subreddit
+from ..dtos.subreddit_dto import SubredditDto
+from ..dtos.submission_dto import SubmissionDto
+from ..dtos.comment_dto import CommentDto
+from ..dtos.related_dto import RelatedDto
+from ..Utils import SubmissionType, TimeFrame
 import json
 
 bp = Blueprint("subreddit", __name__, url_prefix="/subreddit")

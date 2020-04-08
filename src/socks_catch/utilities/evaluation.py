@@ -1,4 +1,4 @@
-from utilities.db_interact import DbInteract
+from .db_interact import DbInteract
 class Evaluation():
   def __init__(self, user_id):
     db = DbInteract()

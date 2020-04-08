@@ -13,7 +13,7 @@ def cli():
 
 @click.command()
 @click.option('--env', default="development", help="""
-  Specify the environment to set up a database for, 
+  Specify the environment to set up a database for,
   valid options are development, production""")
 def dbsetup(env):
   DbSetup(env)
