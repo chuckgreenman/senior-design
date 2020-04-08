@@ -67,14 +67,60 @@
                 </v-layout> 
 
                 <v-layout row>
-                    <v-flex md12>
+                    <v-flex md6>
                     <h3> {{this.user}}'s Karma </h3> 
-                    </v-flex>                                             
-                </v-layout>  
+                    </v-flex> 
+                    <v-flex md6>
+                      <div class="databaseResults" id="dbResult1">
+                        <h3> Evaluation Results</h3> 
+                      </div>
+                  </v-flex>                                             
+                </v-layout>                     
 
-                <div id="extendedChart"> 
-                  <v-chart :width="auto" :options="karmaChart"></v-chart>                   
-                </div>
+                <v-layout row> 
+                  <v-flex md6>
+                    <v-chart :width="auto" :options="karmaChart"></v-chart>  
+                  </v-flex>            
+                  <v-flex md6>  
+                    <div class="databaseResults" id="dbResult2">                  
+                       <v-simple-table style="width:100%" height="300px"
+                       :headers="headers"
+                        :items="desserts"
+                        class="elevation-1">
+                          <tr height="100px">
+                            <th>                              
+                              <div class="tooltip">Delay Percentile
+                                <span class="tooltiptext">A measurement that ranks a user's delay between 
+                                  registering their account and making their first action. A value lower than 0.2 may
+                                  be considered abnormal for a user.</span>
+                              </div> 
+                            </th>
+                            <td>{{this.delay}}</td>                          
+                          </tr>
+                          <tr height="100px">
+                            <th>                              
+                              <div class="tooltip">Action Count
+                                <span class="tooltiptext">A measurement that ranks a user's amount of actions taken. A 
+                                  value higher than 0.8 may be considered abnormal for a user. </span>
+                              </div> 
+                            </th>
+                            <td>{{this.action}}</td>                            
+                          </tr>
+                          <tr height="100px">
+                            <th>                              
+                              <div class="tooltip">Relationship with Closest Neighbors
+                                <span class="tooltiptext">A measurement that determines similarity to other users.
+                                  It is considered abnormal for a user to have many strong relationships with other users 
+                                  in the subreddits they interact with.
+                                </span>
+                              </div> 
+                            </th>
+                            <td>{{this.relationshipNeighbors}}</td>                            
+                          </tr>
+                        </v-simple-table> 
+                    </div>
+                  </v-flex>                                 
+                </v-layout> 
 
                 </div>    
 
@@ -156,6 +202,9 @@ import axios from 'axios'
 export default {
   name: 'MainTabs',
   data: () => ({
+    delay: null,
+    action: null,
+    relationshipNeighbors: null,
     popularWordsChart:  null,
     popularLinksChart: null,
     controversyChart: null,
@@ -195,6 +244,45 @@ export default {
         {            
             revealElements.item(i).className = "showResults";
         }
+
+        // if user was present in database and results were returned, reveal
+        if(Object.keys(response.data.evaluation).length > 0){
+          revealElements = document.getElementsByClassName("databaseResults");
+          for(i = 0; i < revealElements.length; i++)
+          {            
+              revealElements.item(i).className = "showResults";
+          }
+          if(response.data.evaluation["delay_percentile"] <= 0.2)
+          {
+            this.delay = 'Normal';
+          }
+          else{
+            this.delay = 'Abnormal: ' + response.data.evaluation["delay_percentile"].toString();
+          }
+          if(response.data.evaluation["action_count_percentile"] < 0.8)
+          {
+            this.action = 'Normal';
+          }
+          else{
+            this.action = 'Abnormal: ' + response.data.evaluation["action_count_percentile"].toString();
+          }
+
+          var close_relationship = 0;
+          for (i = 0; i < response.data.evaluation["closest_users_by_relationship_weight"].length; i++){
+            // if a neighbor has a weight over 0.25
+            if(response.data.evaluation["closest_users_by_relationship_weight"][i][1] > 0.25){
+              close_relationship = close_relationship + 1;
+            }
+          }
+
+          // If a third or more neighbors go over the threshhold, trigger abnormal
+          if (close_relationship >= response.data.evaluation["closest_users_by_relationship_weight"].length / 3){
+            this.relationshipNeighbors = 'Abnormal: ' + close_relationship.toString() + ' close neighbors';
+          }
+          else{
+            this.relationshipNeighbors = 'Normal';
+          }
+        }        
        
         // Create items array
         var legend_data = Object.keys(response.data.popular_words).map(function(key) {
@@ -868,4 +956,56 @@ export default {
 .subRedditInput{
   display:block
 }
+
+.databaseResults{
+  display:hidden
+}
+
+/*https://www.w3schools.com/howto/howto_css_tooltip.asp*/
+
+ /* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 250px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 105%; 
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {  
+  position: absolute;
+  bottom: 100%;  /* At the top of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+} 
 </style>
