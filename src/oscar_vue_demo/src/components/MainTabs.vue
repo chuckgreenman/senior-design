@@ -41,10 +41,10 @@
 
                 <v-layout row>
                     <v-flex md6>
-                    <v-chart :options="popularWordsChart"></v-chart> 
+                    <v-chart :options="popularWordsChartForUser"></v-chart> 
                     </v-flex>
                     <v-flex md6>
-                    <v-chart :options="popularLinksChart"></v-chart>
+                    <v-chart :options="popularLinksChartForUser"></v-chart>
                     </v-flex>
                 </v-layout> 
 
@@ -59,10 +59,10 @@
 
                 <v-layout row>
                     <v-flex md6>
-                    <v-chart :options="controversyChart"></v-chart> 
+                    <v-chart :options="controversyChartForUser"></v-chart> 
                     </v-flex>      
                     <v-flex md6>
-                    <v-chart :options="initSubRedditRelationChart"></v-chart> 
+                    <v-chart :options="initSubRedditRelationChartForUser"></v-chart> 
                     </v-flex>                     
                 </v-layout> 
 
@@ -84,8 +84,7 @@
                   <v-flex md6>  
                     <div class="databaseResults" id="dbResult2">                  
                        <v-simple-table style="width:100%" height="300px"
-                       :headers="headers"
-                        :items="desserts"
+                       :headers="headers"                        
                         class="elevation-1">
                           <tr height="100px">
                             <th>                              
@@ -207,9 +206,13 @@ export default {
     relationshipNeighbors: null,
     popularWordsChart:  null,
     popularLinksChart: null,
+    popularWordsChartForUser:  null,
+    popularLinksChartForUser: null,
     controversyChart: null,
+    controversyChartForUser: null,
     karmaChart : null,
     initSubRedditRelationChart: null,
+    initSubRedditRelationChartForUser: null,
     fullSubRedditRelationChart: null,
     noDataAvailable: {
       title: {
@@ -238,33 +241,37 @@ export default {
       axios.get('http://localhost:5000/user', {         
          params: { name: this.user }}, {timeout: 0})
       .then((response) => {
+        var i = null;
         // Reveals elements
+        // reveal elements seems to change during processing, so we use
+        // a while loop to bypass
         var revealElements = document.getElementsByClassName("userResults");
-        for(var i = 0; i < revealElements.length; i++)
+        while(revealElements.item(0) != null)
         {            
-            revealElements.item(i).className = "showResults";
+            revealElements.item(0).className = "showResults";
+            revealElements = document.getElementsByClassName("userResults");
         }
 
+        revealElements = [document.getElementById("dbResult1"), document.getElementById("dbResult2")];
         // if user was present in database and results were returned, reveal
-        if(Object.keys(response.data.evaluation).length > 0){
-          revealElements = document.getElementsByClassName("databaseResults");
+        if(response.data.evaluation != null){          
           for(i = 0; i < revealElements.length; i++)
           {            
-              revealElements.item(i).className = "showResults";
-          }
-          if(response.data.evaluation["delay_percentile"] <= 0.2)
+              revealElements[i].className = "showResults";              
+          }         
+          if(response.data.evaluation["delay_percentile"] > 0.2)
           {
             this.delay = 'Normal';
           }
           else{
-            this.delay = 'Abnormal: ' + response.data.evaluation["delay_percentile"].toString();
+            this.delay = 'Abnormal: Delay Percentile: ' + response.data.evaluation["delay_percentile"].toString();
           }
           if(response.data.evaluation["action_count_percentile"] < 0.8)
           {
             this.action = 'Normal';
           }
           else{
-            this.action = 'Abnormal: ' + response.data.evaluation["action_count_percentile"].toString();
+            this.action = 'Abnormal: Action Count Percentile: ' + response.data.evaluation["action_count_percentile"].toString();
           }
 
           var close_relationship = 0;
@@ -282,7 +289,14 @@ export default {
           else{
             this.relationshipNeighbors = 'Normal';
           }
-        }        
+        }       
+        else{
+          // Make sure results are hidden
+          for(i = 0; i < revealElements.length; i++)
+          {            
+              revealElements[i].className = "databaseResults";              
+          } 
+        } 
        
         // Create items array
         var legend_data = Object.keys(response.data.popular_words).map(function(key) {
@@ -309,7 +323,7 @@ export default {
 
         if(series_data.length > 0){
           // Build data for popular words chart
-          this.popularWordsChart = {      
+          this.popularWordsChartForUser = {      
             tooltip: {
                 trigger: 'item',
                 formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -345,7 +359,7 @@ export default {
           }
         }
         else{
-          this.popularWordsChart = this.noDataAvailable;
+          this.popularWordsChartForUser = this.noDataAvailable;
         }
         
         // Create items array
@@ -375,7 +389,7 @@ export default {
         
         if(series_data.length > 0){
           // Build data for popular links chart
-          this.popularLinksChart = {          
+          this.popularLinksChartForUser = {          
           tooltip: {
               trigger: 'item',
               formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -411,7 +425,7 @@ export default {
           }
         }
         else{
-          this.popularLinksChart = this.noDataAvailable;
+          this.popularLinksChartForUser = this.noDataAvailable;
         }        
 
       // Create items array
@@ -439,7 +453,7 @@ export default {
 
         if(series_data.length > 0){
           // Build data for popular links chart
-          this.controversyChart = {          
+          this.controversyChartForUser = {          
           tooltip: {
               trigger: 'item',
               formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -475,7 +489,7 @@ export default {
         }
         }
         else{
-          this.controversyChart = this.noDataAvailable;
+          this.controversyChartForUser = this.noDataAvailable;
         }        
 
         legend_data = ['Comment Karma', 'Link Karma'];
@@ -530,7 +544,7 @@ export default {
         }        
 
         if(series_data.length > 1){
-          this.initSubRedditRelationChart = {
+          this.initSubRedditRelationChartForUser = {
               dataset: {
                   source: series_data
               },
@@ -563,7 +577,7 @@ export default {
           };
         }
         else{
-          this.initSubRedditRelationChart = this.noDataAvailable;
+          this.initSubRedditRelationChartForUser = this.noDataAvailable;
         } 
       }, (error) => {
         console.log(error);
@@ -954,11 +968,11 @@ export default {
 }
 
 .subRedditInput{
-  display:block
+  display: block
 }
 
 .databaseResults{
-  display:hidden
+  display: none
 }
 
 /*https://www.w3schools.com/howto/howto_css_tooltip.asp*/
