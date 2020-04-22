@@ -14,7 +14,7 @@
 #### 7.2 Final Assessments (Spring 2020)
 ##### 7.2.1 [Anna](/homework_essays/self_assessment_assignment_6/debrunner_anna_self_assessment.md)
 ##### 7.2.2 [Charles](/homework_essays/self_assessment_assignment_6/greenman_chuck_assessment.md)
-##### 7.2.3 [Isaac](/homework_essays/self_assessment_assignment_6/mathers_isaac_assessment.md)
+##### 7.2.3 [Isaac](/homework_essays/self_assessment_assignment_6/mathers_isaac_self_assessment.md)
 ### 8. Summary of Hours
 #### 8.1 Team-Wide
 #### 8.2 Anna
