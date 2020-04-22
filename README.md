@@ -1,4 +1,4 @@
-# OSCAR (Open Social Clustering and Analysis for Reddit)
+# OSCAR (Open Social Comparison and Analysis for Reddit)
 ## Table of Contents
 ### 1. [Project Abstract](Project_Abstract.md)
 ### 2. [Project Description](Project-Description.md)

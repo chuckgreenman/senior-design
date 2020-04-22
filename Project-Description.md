@@ -1,4 +1,4 @@
-# Project Description: OSCAR (Open Social Clustering and Analysis for Reddit)
+# Project Description: OSCAR (Open Social Comparison and Analysis for Reddit)
 
 ## Contact Information of the Team
 Anna DeBrunner: debrunac@mail.uc.edu\
@@ -9,7 +9,7 @@ Isaac Mathers: matherit@mail.uc.edu or isaactm98@gmail.com (preferred)
 Dr. Raj Bhatnagar bhatnark@ucmail.uc.edu
 
 ## Project Background Description
-The internet, particularly social media networks, are filled with countless opinions, stories, and users. Additionally, more and more people are using the internet, particularly social media networks, to obtain news and form opinions on global and local events. One such social media network that many people use, partially, if not entirely for this purpose, is Reddit. However, as all content on Reddit is user driven and Reddit has been known to the target of disinformation campaigns, the information available on Reddit cannot always be trusted blindly. With that in mind, the Open Social Clustering and Analysis for Reddit tool, or OSCAR, hopes to provide a more informed experience on Reddit regarding its users and communities. Through the use of data clustering and social graph analysis, OSCAR intends to give the user a better view of the users and communities they interact with. 
+The exploitation of social media has become an important issue in recent years, especially concerning political elections. Although awareness has increased, disinformation has become more pervasive. With another election cycle in the near future, the Open Social Comparison and Analysis for Reddit tool (OSCAR) provides a more informed experience on Reddit regarding its users and communities. 
 
 ## Project Problem Statement
 Identifying biased information or bad actors is resource intensive because the only way to do it well is to fact check everything. It would be useful to a user to know whether there is a reasonable risk that they are interacting with a user that is untrustworthy.

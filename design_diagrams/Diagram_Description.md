@@ -1,4 +1,4 @@
-# Diagram Description: OSCAR (Open Social Clustering and Analysis for Reddit)
+# Diagram Description: OSCAR (Open Social Comparison and Analysis for Reddit)
 
 ## How To View The Diagrams
 The following is a description of the different compontents found within the diagrams and how they should be interpreted:
