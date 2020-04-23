@@ -30,7 +30,7 @@ class Subreddit:
         except prawcore.exceptions.Redirect:
             return False
         except prawcore.exceptions.Forbidden:
-            return False
+            return True
 
     def get_description(self, format='plain'):
         try:
