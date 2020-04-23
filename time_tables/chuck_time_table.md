@@ -9,7 +9,7 @@ Total hours for semester 1: 45.25
 Total hours for semester 2: 51.22
 ## Time Table
 | Date       | Start Time | End Time | Hours | Description                                                                                               | Who was there                     |
-|------------|------------|----------|-------|-----------------------------------------------------------------------------------------------------------|-----------------------------------|------------|
+|------------|------------|----------|-------|-----------------------------------------------------------------------------------------------------------|-----------------------------------|
 |     9/5/19 |      11:00 |    12:30 |  1.50 | Fleshing out ideas                                                                                        | Chuck, Isaac, Anna                |
 |     9/6/19 |       3:00 |     3:30 |  0.50 | Read Detection of Sockpuppets in Social Media, ACM                                                        | Chuck                             |
 |     9/6/19 |       1:50 |     2:20 |  0.50 | Meeting with advisor: ask to be advisor                                                                   | Chuck, Isaac, Anna, Dr. Bhatnagar |
