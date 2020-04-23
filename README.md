@@ -2,7 +2,7 @@
 ## Table of Contents
 ### 1. [Project Description](Project_Description.md)
 ### 2. [User Interface Specification](User_Interface_Specification.pdf)
-### 3. [Test Plan and Results - UPDATES AND LINK NEEDED]
+### 3. [Test Plan and Results](Test_Plan_With_Results.pdf)
 ### 4. [User Manual](User_Manual.pdf)
 ### 5. [Final Presentation](Final_Presentation.pdf)
 ### 6. [Expo Poster](Expo_Poster.pdf)
