@@ -1,19 +1,22 @@
 # Team Summary of Hours
 ## A Note
 The edit/commit history of our [GitHub repository](https://github.com/chuckgreenman/senior-design) serves as an excellent form of proof for work throughout the semester. Furthermore, additional edit history, documents, and notes can be found in [this Google Drive folder.](https://drive.google.com/open?id=12IqtQHln1fNLN4bLNyQQWUjL6LGyx4AD)
+## Totals
+Total Hours: 297.23
+
+Total hours for semester 1: 135.42
+
+Total hours for semester 2: 161.82
 ## Time Table
-| Date       | Start Time | End Time | Hours | Description                                                                                                                                                                                    | Who was there                     | Total       |
-|------------|------------|----------|-------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------|-------------|
-| Total for both semesters |       |        |   297.23
-| Total for semester 1 |       |        |   135.42
-| Total for semester 2 |       |        |   161.82
-|     9/5/19 |      11:00 |    12:30 |  1.50 | Fleshing out ideas                                                                                                                                                                             | Chuck, Isaac, Anna                |      251.98 |
+| Date       | Start Time | End Time | Hours | Description                                                                                                                                                                                    | Who was there                     |
+|------------|------------|----------|-------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------|
+|     9/5/19 |      11:00 |    12:30 |  1.50 | Fleshing out ideas                                                                                                                                                                             | Chuck, Isaac, Anna                |
 |     9/6/19 |       1:50 |     2:20 |  0.50 | Meeting with advisor: ask to be advisor                                                                                                                                                        | Chuck, Isaac, Anna, Dr. Bhatnagar | Anna        |
-|     9/6/19 |       3:00 |     3:30 |  0.50 | Read Detection of Sockpuppets in Social Media, ACM                                                                                                                                             | Chuck                             |       98.25 |
+|     9/6/19 |       3:00 |     3:30 |  0.50 | Read Detection of Sockpuppets in Social Media, ACM                                                                                                                                             | Chuck                             |
 |     9/7/19 |      11:00 |    13:30 |  2.50 | Write Scrapy Bot to Scrape Snopes                                                                                                                                                              | Chuck                             | Isaac       |
-|    9/12/19 |      10:30 |    12:30 |  2.00 | Reflection/self assessment                                                                                                                                                                     | Anna                              | 102.5166667 |
+|    9/12/19 |      10:30 |    12:30 |  2.00 | Reflection/self assessment                                                                                                                                                                     | Anna                              |
 |    9/12/19 |      10:30 |    12:30 |  2.00 | Reflection/self assessment                                                                                                                                                                     | Isaac                             | Chuck       |
-|    9/12/19 |      10:30 |    12:30 |  2.00 | Reflection/self assessment                                                                                                                                                                     | Chuck                             | 96.46666667 |
+|    9/12/19 |      10:30 |    12:30 |  2.00 | Reflection/self assessment                                                                                                                                                                     | Chuck                             |
 |    9/17/19 |      11:00 |    12:30 |  1.50 | Work on user stories                                                                                                                                                                           | Chuck, Isaac, Anna                |             |
 |    9/19/19 |      11:00 |    12:30 |  1.50 | Work on overall design, meet with advisor                                                                                                                                                      | Chuck, Isaac, Anna, Dr. Bhatnagar |             |
 |    9/19/19 |       8:00 |    11:00 |  3.00 | Research Paperspace, Linode Compute, BigQuery ML, on device pipelining                                                                                                                         | Chuck                             |             |
