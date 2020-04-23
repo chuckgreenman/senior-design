@@ -2,13 +2,16 @@
 ## Overview
 Chuck played a key role in a few critical areas throughout the development of OSCAR. First, Chuck did lots of research into various algorithms and technologies we were looking to implement and served as a tech advisor for the team on what direction to take. Secondly, Chuck set up and created our database and populated it with historical Reddit data. Finally, Chuck researched the SocksCatch algorithm and created our implementation of it. 
 ## Time Table
-| Date       | Start Time | End Time | Hours | Description                                                                                               | Who was there                     | Total      |
+| Date       | Start Time | End Time | Hours | Description                                                                                               | Who was there                     |
 |------------|------------|----------|-------|-----------------------------------------------------------------------------------------------------------|-----------------------------------|------------|
-|     9/5/19 |      11:00 |    12:30 |  1.50 | Fleshing out ideas                                                                                        | Chuck, Isaac, Anna                |      96.47 |
-|     9/6/19 |       3:00 |     3:30 |  0.50 | Read Detection of Sockpuppets in Social Media, ACM                                                        | Chuck                             | Semester 1 |
-|     9/6/19 |       1:50 |     2:20 |  0.50 | Meeting with advisor: ask to be advisor                                                                   | Chuck, Isaac, Anna, Dr. Bhatnagar |      45.25 |
+| Total for both semesters |       |        |   96.47
+| Total for semester 1 |       |        |   45.25
+| Total for semester 2 |       |        |   51.22
+|     9/5/19 |      11:00 |    12:30 |  1.50 | Fleshing out ideas                                                                                        | Chuck, Isaac, Anna                |      
+|     9/6/19 |       3:00 |     3:30 |  0.50 | Read Detection of Sockpuppets in Social Media, ACM                                                        | Chuck                             |
+|     9/6/19 |       1:50 |     2:20 |  0.50 | Meeting with advisor: ask to be advisor                                                                   | Chuck, Isaac, Anna, Dr. Bhatnagar |
 |     9/7/19 |      11:00 |    13:30 |  2.50 | Write Scrapy Bot to Scrape Snopes                                                                         | Chuck                             | Semester 2 |
-|    9/12/19 |      10:30 |    12:30 |  2.00 | Reflection/self assessment                                                                                | Chuck                             |      51.22 |
+|    9/12/19 |      10:30 |    12:30 |  2.00 | Reflection/self assessment                                                                                | Chuck                             |
 |    9/17/19 |      11:00 |    12:30 |  1.50 | Work on user stories                                                                                      | Chuck, Isaac, Anna                |            |
 |    9/19/19 |       8:00 |    11:00 |  3.00 | Research Paperspace, Linode Compute, BigQuery ML, on device pipelining                                    | Chuck                             |            |
 |    9/19/19 |      11:00 |    12:30 |  1.50 | Work on overall design, meet with advisor                                                                 | Chuck, Isaac, Anna, Dr. Bhatnagar |            |

@@ -4,6 +4,9 @@ The edit/commit history of our [GitHub repository](https://github.com/chuckgreen
 ## Time Table
 | Date       | Start Time | End Time | Hours | Description                                                                                                                                                                                    | Who was there                     | Total       |
 |------------|------------|----------|-------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------|-------------|
+| Total for both semesters |       |        |   297.23
+| Total for semester 1 |       |        |   135.42
+| Total for semester 2 |       |        |   161.82
 |     9/5/19 |      11:00 |    12:30 |  1.50 | Fleshing out ideas                                                                                                                                                                             | Chuck, Isaac, Anna                |      251.98 |
 |     9/6/19 |       1:50 |     2:20 |  0.50 | Meeting with advisor: ask to be advisor                                                                                                                                                        | Chuck, Isaac, Anna, Dr. Bhatnagar | Anna        |
 |     9/6/19 |       3:00 |     3:30 |  0.50 | Read Detection of Sockpuppets in Social Media, ACM                                                                                                                                             | Chuck                             |       98.25 |
