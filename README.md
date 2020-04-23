@@ -16,7 +16,7 @@
 ##### 7.2.2 [Charles](/homework_essays/self_assessment_assignment_6/greenman_chuck_assessment.md)
 ##### 7.2.3 [Isaac](/homework_essays/self_assessment_assignment_6/mathers_isaac_self_assessment.md)
 ### 8. Summary of Hours
-#### 8.1 Team-Wide
-#### 8.2 Anna
-#### 8.3 Charles
-#### 8.4 Isaac
+#### 8.1 [Team-Wide](time_tables/total_team_time_table.md)
+#### 8.2 [Anna](time_tables/anna_time_table.md)
+#### 8.3 [Charles](time_tables/chuck_time_table.md)
+#### 8.4 [Isaac](time_tables/isaac_time_table.md)
